@@ -1,0 +1,13 @@
+name: wflow-pub
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - bibtexparser
+  - ipython
+  - make
+  - python
+  - r-base
+  - r-stringr
+  - texlive-core
+

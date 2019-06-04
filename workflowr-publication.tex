@@ -1,0 +1,928 @@
+\documentclass[9pt,a4paper]{extarticle}
+
+\usepackage{f1000_styles}
+
+\usepackage{hyperref}
+
+\usepackage[numbers]{natbib}
+
+% include \verb macros in \caption of figures
+
+% http://tex.stackexchange.com/a/8814
+
+\usepackage{cprotect}
+
+\begin{document}
+
+\pagestyle{front}
+
+\title{Creating and sharing reproducible research code the workflowr
+way}
+
+\author[1]{John D. Blischak}
+
+\author[1,2]{Peter Carbonetto}
+
+\author[1,3]{Matthew Stephens}
+
+\affil[1]{Department of Human Genetics, University of Chicago}
+
+\affil[2]{Research Computing Center, University of Chicago}
+
+\affil[3]{Department of Statistics, University of Chicago}
+
+\maketitle
+
+\thispagestyle{front}
+
+\begin{abstract}
+
+300 words
+
+\end{abstract}
+
+\section*{Keywords}
+
+reproducibility, open science, workflow, R
+
+\clearpage
+
+\pagestyle{main}
+
+
+\section*{Introduction}
+
+Science should be independently verifiable and extendable [ref]. As
+computational methods become increasingly important to many disciplines
+across academia and industry, this requires code that can be accessed
+and run , and outputs that can be corroborated against those in the
+published article \cite{Buckheit1995, Gentleman2005, Peng2011, Ince2012,
+Morin2012, Sandve2013, Easterbrook2014, Stodden2016, Lowndes2017}.
+Unfortunately, this is not commonly achieved in practice
+\cite{Ioannidis2009, Ioannidis2014}. One barrier is that the code is
+typically written by domain specialists that are experts in their field
+of study, but are unlikely to become experts in computer programming
+\cite{Wilson2014b}. With the advent of interactive programming
+environments such as R \cite{R2019} and python[ref], accessible
+interfaces for these programming environments such as RStudio
+\cite{RStudio2018} and Jupyter \cite{Kluyver2016}, and a growing
+community supporting these open source tools, this has made it possible
+to implement complex or large-scale analyses with little formal training
+in computing and informatics. But this also means that there is now a
+larger number of analysts producing less reproducible analyses. Further,
+some features of interactive programming that make it incredibly
+powerful for quickly developing complex analyses—such as the ability to
+construct and evaluate program fragments, otherwise known as the
+"read-eval-print" loop \cite{Findler2002}— can also introduce subtle
+bugs or incompatibilities, impeding development of reproducible
+analyses. In light of this situation, all researchers need accessible
+tools that integrate with interactive programming and can ease them into
+more reproducible and collaborative code development practices without a
+great burden.
+
+A second barrier to reproducibility is that source code and data are
+often not made publicly available in a form that is easy to retrieve and
+use \cite{Stodden2018}. There are now many Web resources dedicated to
+publishing and disseminating code that are free for academics to use
+[give examples]. However, adopting these resources within routine
+research practice requires considerable comfort level with tools that
+many if not most scientists are not familiar with. Moreover, it requires
+an investment of time and effort to organize project files for
+distribution in a logical manner. This suggests the need for tools that
+can facilitate the process of organizing code and data (when not
+sensitive) and disseminating using existing Web resources that are
+already freely available to the scientific community.
+
+We have developed an R \cite{R2019} package, "workflowr", to address
+these two barriers: reproducibility of computational outputs, and
+publishing of source code and data used to generate these outputs. We
+call the R package workflowr because it is aimed at facilitating a
+"workflow"—a sequence of steps to be repeated and eventually integrated
+into research practice—for making projects reproducible and accessible.
+
+The workflowr interface is intentionally simple so that learning to use
+it does not become another barrier in itself. To this end, workflowr
+integrates four "core competencies" of computational reproducibility in
+one framework: (1) version control \cite{Loeliger2012, Chacon2014}, (2)
+literate programming \cite{Xie2015}, (3) code review [ref], and (4)
+static website rendering and distribution from source code. Although,
+individually, each of the core competencies is difficult to master, we
+show that expertise in these core competencies is not needed to reap
+substantial benefits from their use. In the remainder of this monograph,
+we explain how the core competencies are integrated into a single
+interface with simple commands, and why providing a highly integrated
+interface greatly facilitates computational reproducibility and "Open
+Science".
+
+\subsection*{Overview of workflowr}
+
+Main points:
+
+• workflowr is a tool for managing the development history of a data
+analysis project—specifically, the source code files generating the
+analyses, and the output files containing the results of these analyses.
+
+• In workflowr, the main "workflow" for developing an analysis project
+consists of three cycles, or loops: (1) an inner-most loop, the
+"edit-build" cycle, in which the user works on the analysis
+interactively, and tests the analysis code using the "build" interface
+(similar to the "read-eval-print" loop [ref]); (2) an outer loop, the
+"build-publish" cycle, in which the user develops the code into a
+working, satisfactory version, then the "publish" interface validates
+the code in a testing environment to better ensure that the results are
+reproducible, then, if the tests succeed, a permanent snapshot of the
+analysis is packaged in a form that facilitates running the code and
+reproducing the results in the future; and (3) a "publish-push" cycle,
+in which the development history is recorded until it is ready to be
+disseminated to the team (in a private distribution channel), or to the
+community (in a public distribution channel). (For proper collaboration
+in which multiple team members are developing the analysis, this cycle
+would also include merging of multiple development histories, which we
+explain in more detail below.) All these processes are automated by a
+few lightweight functions in R, allowing the user to focus on high-level
+project tasks with minimal distraction from mundane of aspects of
+reproducibility. The ultimate design aim of workflowr is to integrate
+these workflows as seemlessly as possible into existing interactive
+programming practices in R.
+
+• Version control. Each time an analysis is published, a snapshot of the
+source code and packaged results is created. We use the Git distributed
+data management system [ref] to create these snapshots. Although Git was
+originally intended to support large-scale, distributed software
+development such as the Linux kernel [ref], here it is used to implement
+a key reproducibility feature: each analysis version is associated with
+a label that can be used to identify a unique version of published code
+and results in the project development history. This is instrumental for
+collaborating on projects so that team members can communicate about
+development history of an anlaysis. Workflowr also uses another feature
+of Git—"remotes"—to enable distributed project development across
+multiple locations; this allows, for example, a single user to manage
+project versions on multiple computers, or allows team members to
+contribute to a single project.
+
+• Literate programming. Each analysis is "published" by packaging it in
+a digestable form using literate programming tools. Although the ideas
+behind "literate programming" are not new [ref], only recently have
+tools advanced to a point that they work seemlessly in R. The
+technologies behind this include: (1) R Markdown [ref], a lightweight
+yet flexible platform-independent text format built from the "Markdown"
+markup language [ref] for combining freedom text and R code into "coding
+narratives" [ref]; (2) pandoc, a framework for converting a wide range
+of commonly used document formats [ref]; and (3) and the R packages
+knitr [ref] and rmarkdown [ref] that integrate pandoc capabilities into
+R to allow seemless generation of webpages from analyses implemented in
+R Markdown. Workflowr augments the generation of the webpages with
+additional reproducibility features.
+
+• Static websites: Finally, workflowr is closely integrated with popular
+online services such as GitHub Pages [ref] and GitLab Pages [ref] for
+hosting static webpages directly from a git repository. This allows the
+code and results to be easily shared and browsed.
+
+• Why we use R: interactive programming language widely used in science
+and data analysis, growing user community, R packages already developed
+implementing key functionality, easy installation process for major
+platforms (via CRAN).
+
+• workflowr is an R package that can be easily installed on CRAN
+("install.packages"), and versions in-development are available from
+GitHub. Distributed via MIT license to ensure as few restrictions as
+possible. Text to adapt from khmer paper: The khmer software consists of
+a core library implemented in C++, a CPython library wrapper implemented
+in C, and a set of Python driver scripts that make use of the library to
+perform various sequence analysis tasks. The software is currently
+developed on GitHub under https://github.com/dib-lab/khmer, and it is
+released under the BSD License. There is greater than 87% statement
+coverage under automated tests, measured on both C++ and Python code but
+primarily executed at the Python level.
+
+• Integrated with popular RStudio IDE (give example).
+
+• Help materials: We have extensive documentation, tutorials and user
+support.
+
+• Community: Contributions and feedback from community has improved
+product.
+
+• It is being used now: Refer to "use cases" section below.
+
+Additional supporting functions include… To facilitate reproducibility,
+workflowr provides a few high-level functions that automate the process
+of setting up an organized project directory, versioning both the source
+code and results, and executing the code reproducibly (e.g. setting the
+seed).
+
+To promote openness and collaboration, workflowr creates a static
+website that contains the results. It also provides documentation on how
+to host the website online using various free web hosting sites. With
+minimal knowledge of web technologies, a user can share their latest
+research with collaborators and colleagues by sending them a URL.
+
+In more detail, the workflowr R package integrates three main features:
+1) literate programming, 2) version control, and 3) static website
+hosting. Although some of these technologies are relatively new, they
+are nearing maturity. Literate programming is the concept of including
+descriptive prose, source code, and the generated results in the same
+document. R has great support for literate programming via the R
+packages knitr and rmarkdown. Because workflowr directly extends these
+popular packages, any valid R Markdown file can be included in a
+workflowr project. Specifically, workflowr uses the capabilities of the
+rmarkdown package to combine multiple R Markdown generated HTML files
+into a single website with a Bootstrap navigation bar. Version control
+is a software engineering technique for saving snapshots of source code
+during development. Analogous to writing software, versioning data
+analysis code (and potentially the results) is a good method for
+increasing transparency and reproducibility. Any interested user can
+inspect the history of the data analysis and also revert to a past
+version to recreate previous results. A currently popular version
+control tool is Git. The workflowr package runs Git commands using the R
+package git2r, which provides an interface to the libgit2 library, which
+is a minimal implementation of Git written in C. A static website
+consists of pre-made HTML webpages (in contrast to a dynamic website in
+which each page requires running server code to query a database).
+Because static websites are so cheap to host, there are many services
+that provide free static web hosting. This includes websites which
+provide hosting for Git repositories (e.g. GitHub, GitLab, Bitbucket).
+The workflowr R package provides helper functions and documentation for
+deploying the workflowr website for free using one of these Git hosting
+services. GitHub Pages and GitLab Pages are currently the most
+well-supported and well-documented options (and recommended for new
+users), but users can deploy the workflowr website using any service
+they prefer.
+
+\subsection*{Background on tools for reproducible data science}
+
+Many software tools, and guidelines for using them, have been developed
+that directly or indirectly advance open and reproducible data analysis.
+A comprehensive survey of these tools is beyond the scope of this
+article, but we give an overview of the key developments in order to
+situate our contribution.
+
+Tools and technologies we may want to mention in the background section:
+
+• Git
+
+• Jupyter (formerly IPython)
+
+• pandoc
+
+• knitr, rmarkdown, Sweave, and related tools (bookdown, blogdown,
+pkgdown, etc).
+
+• GitHub, GitLab
+
+• Zenodo
+
+• Pipeline management tools (GNU Make, Snakemake, etc).
+
+• Binder, Code Ocean
+
+• Package managers (Anaconda, Miniconda, Homebrew, etc.)
+
+• Package channels/repositories (CRAN, Bioconductor, Bioconda, etc).
+
+• Containers (Singularity, Docker, Kubernates, etc.).
+
+\href{https://github.com/benmarwick/rrtools}{rrtools} and other R
+packages to support
+\href{https://github.com/jdblischak/ctv-project-workflows/blob/master/ProjectWorkflows.md}{project
+workflows}
+
+The R community has had a long tradition of promoting reproducible
+research. It has great support for literate programming via knitr and
+rmarkdown and their derivatives (bookdown for books, blogdown for blogs,
+pkgdown for documentation). The workflowr package is similar to these
+packages since it is also an extension of rmarkdown, but instead of
+adding features to enable a new publishing format, it integrates version
+control with Git and other reproducibility features. Because workflowr
+creates an organized directory structure, it is similar to project
+framework packages like ProjectTemplate and adapr \cite{Gelfond2018}. A
+big difference is that workflowr is less restrictive. In other words, no
+workflowr-specific functions need to be integrated into the R code, and
+thus the code and data in a workflowr project could be extracted with
+minimal effort. Because the main goal of workflowr is to track and share
+development of an exploratory data analysis project, it is not ideal for
+building complicated multi-step pipelines. Dedicated pipeline software
+such as the R package drake are designed to handle dependencies and
+submit long-running code to compute nodes. There are also R packages
+that help manage software dependencies (packrat, switchr) or archive
+data objects (archivist, cacher), but these could be used in conjunction
+with workflowr since it does not directly support these features.
+Comparable software available for Python users would be Jupyter,
+ActivePapers \url{https://www.activepapers.org/}, and Sumatra
+\url{https://pythonhosted.org/Sumatra/}. Lastly, there exist
+feature-rich computing platforms for reproducible research (Open Science
+Framework \url{https://osf.io/}, The Whole Tale
+\url{https://wholetale.org/}, Gigantum
+\url{https://docs.gigantum.com/}). These ambitious projects provide
+great support for open and reproducible research, but of course suffer
+from vendor lock-in (and an uncertain future). In contrast, the
+workflowr package can be installed and used anywhere an R user normally
+writes their R code, and the static website it produces can be hosted on
+any web server (even if only viewed by the user on their local
+computer).
+
+
+\section*{Methods}
+
+The workflowr R package makes data analysis projects more organized,
+tracked, reproducible, and shareable. The R package and its dependencies
+are straightforward to install, while also being highly customizable for
+more experienced users. In the following sections, we give an overview
+of the features of the workflowr R package, and describe their
+implementation. For step-by-step instructions on starting a workflowr
+project, see the
+\href{https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html}{"Getting
+started with workflowr"} vignette.
+
+\subsection*{Operation}
+
+\subsubsection*{Organizing files and results}
+
+[]
+
+Figure 1. The workflowr package organizes files and results. A) The
+function \verb|wflow_start()| populates a new project directory with all the
+files needed to begin a workflowr project. The default directory
+structure encourages users to organize their files as the project
+progresses (this is only a suggested structure, and users may change the
+names of many of the files and directories as they see fit). Files that
+are required by workflowr are shown in red. B) The results are organized
+into a website which is stored in the "docs" folder. The use of
+hyperlinks allows readers to efficiently browse and access the results.
+The example screenshots demonstrate how to navigate a workflowr website.
+Clicking on a hyperlink in the main page (1) takes you to a webpage with
+results. Then clicking on the Home hyperlink (2) in the navigation bar
+returns you to the main page.
+
+One of the aims of workflowr is to promote peer review of data analyses,
+which requires that shared code and results be organized and accessible.
+However, without the proper tool to facilitate this, a typical project
+will evolve to an unstructured collection of files, resulting in
+frustration and an ineffective peer review process.
+
+The workflowr package provides simple tools to facilitate staying
+organized from the outset. The function \verb|wflow_start()| populates a new
+project directory with suggested subdirectories, scripts, and
+configuration files for a data analysis (FIGURE 1A). By default, the
+subdirectories include: analysis/ for scripts that produce results such
+as figures and tables; docs/ for storing the webpages that make up the
+workflowr website; code/ for longer running scripts, compiled code
+(e.g., C++), and other source code supporting the data analyses; data/
+for raw data files; and output/ for processed data files and other
+outputs generated by the scripts and analyses. Importantly, this setup
+is flexible and configurable; only two of these directories are
+required, \verb|analysis/| and \verb|docs/|, and both of these
+directories can be renamed later.
+
+Beyond data and source code, it is also important to organize
+results—consider that most scientific publications have a results
+section that conforms to a standard logical structure. However, the
+sequential structure of a scientific paper is not appropriate for an
+ongoing investigation or exploratory data analysis; for more typical
+uses of workflowr, it is more appropriate to have a flexible,
+non-sequential layout that can be easily modified and expanded on, and
+so that a reader can quickly jump to relevant parts of the analysis.
+HTML is very well suited for this purpose; it is specifically designed
+to quickly access relevant information in the same document or in
+another document. In R, the knitr and rmarkdown packages automate
+generation of HTML from R Markdown. In the workflowr package, the
+\verb|wflow_build()| function provides this service.
+
+Once a data analysis has been implemented in an R Markdown file,
+\verb|wflow_build()| will do the work of packaging the code and results into a
+single HTML webpage. Webpages are easily revised after changes are made
+to the analysis, again by using the \verb|wflow_build()| function. Thus, a
+typical workflowr use will involve iterating between revisions to the R
+Markdown analyses and calls to \verb|wflow_build()|. \textit{The primary output
+of workflowr is a website organizing the results generated by R Markdown
+analyses} (FIGURE 1B).
+
+\subsubsection*{Tracking development history with version control}
+
+As an analysis project progresses, many versions of the results are
+produced as existing results are scrutinized, decisions are made,
+mistakes are fixed, and new data sets are considered. Keeping track of
+this evolution is important for documenting this progress and retracing
+the development of an analysis. Without version control, documenting the
+analysis history by copying code and results whenever an important
+change is made—typically resulting in a large collection of files with
+names such as \verb|results-v2-final_final.pdf| and
+\verb|anova_analyses_before_adding_new_samples.R|—is not only tedious,
+but also error-prone, and makes it difficult to communicate changes to
+collaborators.
+
+There is now a much better way to keep track of the evolution of your
+analysis: using the version control system, Git. Git presents two
+challenges, however. First, since Git was designed for large teams of
+software engineers to collaborate on large-scale software projects, the
+features and documentation are overly complex for any researcher unless
+they are already an experienced computer scientist or software engineer.
+This steep learning curve can discourage researchers from using Git for
+their projects. Second, Git was originally intended to manage code, and
+was not envisaged as a tool for tracking development of a data analysis
+project—consider that the researcher will want to track not only the
+source code and data, but also the results generated by the code and
+data.
+
+To address these two challenges, we developed workflowr with two key
+design points in mind.
+
+Our first design decision was to provide a simple interface to the
+subset of Git commands that are most essential for tracking a data
+analysis project. This means that a researcher using workflowr can adopt
+Git from the very beginning of their project without having to be
+comfortable with the Git command-line interface.
+
+Second, we designed workflowr so that it manages source code files (R
+Markdown) differently from the results files (webpages and figures).
+
+While these two decisions influenced the way we designed the entire
+workflowr package, the impact of these two decisions are best
+illustrated by describing the operation of \verb|wflow_publish()|, which is one
+of the key functions in the workflowr interface. This function performs
+three key steps, illustrated in FIGURE 2:
+
+1. Commit source: Commit the R Markdown source file to the Git
+repository, and record the "Secure Hash Function"—a hexadecimal
+sequence, often abbreviated as "SHA1", that uniquely identifies the
+commit in the Git repository.
+
+2. Render results: Execute the source code to generate the results, and
+compile the results into an HTML file. Workflowr embeds the HTML with
+the SHA1 generated in Step 1.
+
+3. Commit results: Commit the HTML and figure files generated in Step 2.
+
+The three-step \verb|wflow_publish()| procedure guarantees that each new
+collection of results—stored in an HTML file and accompanying figure
+files—is produced by a unique and identifiable version of an R Markdown
+source file.
+
+The sequence of Git commands and other operations are executed behind
+the scenes, so that the user only needs to make a simple call to
+\verb|wflow_publish()|. We have also implemented many checks and extensive
+error handling to make sure that the Git repository and R environment
+are in an acceptable state for committing the results. (When there are
+issues, workflowr provides guidance on how to fix these issues).
+
+Another key benefit of the \verb|wflow_publish()| three-step procedure is that
+it provides a \textit{workflow} for using Git in a data analysis
+project. Even people who are comfortable with Git may be unsure how to
+use Git for a data analysis—what files to commit and how often? Although
+workflowr does not address every Git-related question, it does provide a
+Best Practice commit protocol for a data analysis:
+
+1. Every commit to an (R Markdown) analysis file is paired with a commit
+to the results file generated by that R Markdown file.
+
+2. \textit{An analysis file is only committed if it successfully runs};
+upon failure, \verb|wflow_publish()| aborts, and neither code nor results are
+committed to the Git repository. (workflowr cannot stop someone from
+committing code that does not work, but it can at least encourage this
+practice through the workflowr interface.)
+
+[]
+
+Figure 2. The function \verb|wflow_publish()| versions the source and results
+files. The function \verb|wflow_publish()| performs a 3 step process to ensure
+that the result HTML file is always created from a specific version of
+the source R Markdown file. (1) The first step commits the changes to
+the source R Markdown file. (2) The second step builds the results HTML
+file from the source R Markdown file. This ensures that the results were
+generated from this exact version of the R Markdown file. Furthermore,
+the unique version of the Git repository is inserted directly into the
+HTML file to facilitate transparency. (3) The results HTML file (and any
+related figure files) are committed to the Git repository. Thus the
+results of the analysis are versioned in addition to the source code.
+
+One way to view workflowr is as an rmarkdown-aware version control
+system. To track the development of the R Markdown files, workflowr
+assigns a status to each one (FIGURE 3). These statuses are used
+internally, but can also be reported to the user with \verb|wflow_status()|.
+Specifically, the status of each R Markdown file corresponds not only to
+its own status in Git but also its corresponding HTML file. A “scratch”
+R Markdown file is one that is not yet being tracked with Git. An
+“unpublished” R Markdown files is one that is tracked by Git, but its
+accompanying HTML file is not. A “published” R Markdown file is one that
+is tracked by Git as well as its accompanying HTML file. Furthermore,
+each “published” R Markdown file has a substatus. If no changes have
+been made to the R Markdown file since its HTML file was last published,
+it is “up-to-date”. In contrast, if an R Markdown file has been modified
+since the last time its HTML file was published, it is “modified”. The
+function \verb|wflow_status()| reports all the R Markdown files which have the
+status “scratch”, “unpublished”, or “modified”, and recommends the user
+to publish the results with \verb|wflow_publish()|.
+
+[]
+
+Figure 3. The workflowr package is an R Markdown aware version control
+system. The function \verb|wflow_status()| assigns a status to each R Markdown
+file in the project based on the its Git status and that of its
+corresponding HTML file.
+
+\subsubsection*{Reproducing past results}
+
+Reproducing computational results is challenging, even for the original
+author. Therefore it is important to follow best practices for
+reproducible research \cite{Sandve2013, Wilson2014a, Wilson2017}.
+Unfortunately not only is this list of best practices daunting for
+novices to incorporate, it is also easy for experienced practitioners to
+mistakenly forget an important step. The philosophy of workflowr is to
+automate as many reproducibility steps as possible so that researchers
+can focus on their analysis. Furthermore, workflowr embeds a report of
+which reproducibility checks passed or failed at the top of each file,
+so that the original author as well as any readers know which
+reproducibility safeguards were applied to each analysis.
+
+When executing the code in an R Markdown file with \verb|wflow_build()| or
+\verb|wflow_publish()|, workflowr automatically implements multiple
+reproducibility safeguards (FIGURE 4). First, it starts a new R process
+to execute the code. This avoids any unpredictable issues arising from
+objects defined in the user’s current R session (e.g. if a critical
+variable was only defined in the current session, the code in the file
+would execute, but then fail in any future session). Second, it sets a
+seed for the pseudo-random number generator before execution, so that
+analyses that rely on random numbers always return the same result.
+Third, it records information on the current operating system, R
+version, and package versions that were used to produce the results.
+Lastly, workflowr performs reproducibility checks and inserts a report
+at the top of the HTML page. As long as the user does not disable the
+automated steps above, each analysis will pass these checks. In
+addition, workflowr checks and reports the current status of the Git
+repository and other factors important for reproducibility.
+
+[]
+
+Figure 4. The workflowr report describes the reproducibility checks. A)
+There is a button at the top of each HTML file that contains the
+workflowr report. If any of the reproducibility checks failed, it will
+display a red warning symbol. Clicking on the button (1) reveals the
+full workflowr report with multiple tabs. Clicking on the tab Checks (2)
+lists all the checks that passed or failed. Clicking on any of these (3)
+produces more explanatory text. In this example, the R Markdown file has
+uncommitted changes (this is fine during active development of the
+analysis, but once it is ready to share, it needs to be committed). The
+text suggests running \verb|wflow_publish()| to remove the warning. B) If all
+the workflowr reproducibility checks pass, then the workflowr button
+will instead display a green checkmark. This time, clicking the
+individual reproducibility check (3) will explain why it was important
+that the check was performed.
+
+\subsubsection*{Sharing results online}
+
+The version-controlled results website created by workflowr is a
+self-contained static website. This means that the website subdirectory
+can be copied to any web server to host the website online. Once online,
+a user can share the URL with collaborators and colleagues and also
+include it in the Methods section of a paper.
+
+Because a workflowr project is already a Git repository, the easiest
+option for hosting the website is to take advantage of the free static
+web hosting provided by Git hosting
+
+services (e.g. GitHub Pages or GitLab Pages). Workflowr provides the
+functions \verb|wflow_use_github()| and \verb|wflow_use_gitlab()| that will perform
+all the one-time local steps to prepare the project for using GitHub or
+GitLab, respectively. After a user creates a new Git repository on the
+online platform, she can upload the project from their local machine
+with \verb|wflow_git_push()|.
+
+An important goal of the workflowr website is to allow any reader to
+take advantage of version control without having to write or execute any
+code. In addition to the reproducibility report, workflowr also
+automatically inserts links to every past version of the R Markdown
+file, the HTML file, and any figure files. For example, if a
+collaborator wants to download a specific version of a figure from six
+months ago, she could do this with a few clicks on the workflowr
+website.
+
+\subsubsection*{Installation}
+
+The workflowr software is available on CRAN and can be downloaded from
+within the R console with \verb|install.packages("workflowr")|. It is
+regularly comprehensively tested on all major operating systems (Linux,
+macOS, Windows), and will work with R version 3.2.5 or later. Because
+workflowr uses the rmarkdown package to build the HTML pages, it
+requires the document conversion software pandoc to be installed. The
+easiest method for R users to install pandoc is to install RStudio,
+which automatically installs it. Note that installation of Git is
+optional, but is recommended if users need to perform more complex Git
+operations.
+
+\subsubsection*{Customization}
+
+A workflowr website is designed to be customizable. Common HTML styling
+settings from the rmarkdown package can be configured in the file
+\verb|analysis/_site.yml|. Workflowr-specific settings, e.g. the seed to
+set or which directory to execute the code in, can be configured in the
+file \verb|_workflowr.yml|.
+
+\subsubsection*{Miscellaneous}
+
+The workflowr package aims to reduce the difficulty with working
+directories, especially when working with R Markdown files. First, all
+the workflowr commands can be run from within any subdirectory of the
+workflowr project, and they will behave the same. Second, by default all
+the R Markdown files are executed from the root of the workflowr
+project, even though the files themselves are located in a subdirectory.
+This fixes a common pain point for new R Markdown users, when they test
+their code in one directory but then the file executes in the directory
+where it is saved.
+
+\subsection*{Implementation}
+
+\subsubsection*{Organizing files and results}
+
+The function \verb|wflow_start()| populates the project directory using
+pre-defined template files. Furthermore, it uses the R package glue to
+insert relevant variables, e.g. the name of the project, directly into
+the newly created files.
+
+The function \verb|wflow_build()| builds a website from a collection of R
+Markdown files using the function \verb|render_site()| from the rmarkdown
+package. The function \verb|render_site()| downloads and links all the
+necessary CSS and JavaScript files to create a responsive website with a
+navigation bar (specifically it uses the Bootstrap framework). The
+website settings can be configured in the file
+\verb|analysis/_site.yml|, e.g. the links in the navigation bar and the
+path to the website directory. Similar to other R packages that extend
+rmarkdown (e.g. bookdown), workflowr provides a custom site generator,
+\verb|wflow_site()|, to modify this process. The most noticeable difference
+from the default is that the generated website files (HTML, CSS,
+JavaScript) are moved from \verb|analysis/| to \verb|docs/| instead of
+copied, which avoids duplication and reduces the number of files per
+subdirectory.
+
+\subsubsection*{Tracking development history with version control}
+
+The workflowr functions use the R package git2r to run Git commands. The
+git2r package is a wrapper around libgit2, a minimal C implementation of
+Git.
+
+The function \verb|wflow_status()| determines the status of each R Markdown
+file in the project by comparing its Git status to the Git status of its
+HTML file. Using Git’s nomenclature, a “scratch” R Markdown file is
+uncommitted, an “unpublished” R Markdown file is committed but not its
+HTML, a published R Markdown file and its HTML file are both committed,
+and a modified R Markdown file has any changes (they can be unstaged,
+staged, or committed) that were made since the last time its HTML file
+was committed (FIGURE 3).
+
+\subsubsection*{Reproducing past results}
+
+Workflowr uses the R package callr to start a new R process and execute
+the code. Workflowr injects code chunks and the reproducibility report
+into the file using a custom output format, \verb|wflow_html()|, which extends
+the output format \verb|html_document()| from the rmarkdown package. In this
+way users gain the benefits of workflowr’s reproducibility features
+while still being able to use the latest customization features
+implemented in rmarkdown (e.g. table of contents, folding of code
+chunks, etc.). The seed is set by inserting a code chunk at the start of
+the file to run the base R function set.\verb|seed()|. The session information
+is recorded at execution by inserting a code chunk at the end of the
+file to run the base R function sessionI\verb|nfo()|.
+
+\subsubsection*{Sharing results online}
+
+The functions \verb|wflow_use_github()| and \verb|wflow_use_gitlab()| set the remote
+Git repository (i.e. git remote add origin URL, via \verb|wflow_git_remote()|)
+and add a link to the source code repository into the navigation bar.
+Additionally, \verb|wflow_use_gitlab()| configures GitLab Pages via the file
+.gitlab-ci.yml (unfortunately setting up GitHub Pages must be done
+manually because it is not currently exposed via the GitHub API).
+Neither function automatically creates the repository online. (This
+would require the user to create a personal access token, and we decided
+it is easier for users to leave this once-per-project action as a manual
+step.)
+
+The links to past versions of the files are inserted by \verb|wflow_html()|.
+This requires that the user has set a remote Git repository, which
+workflowr uses to determine the URL to past versions. Links to past
+versions of the R Markdown file (or figure files) load that file at the
+given Git commit on GitHub or GitLab. Links to past versions of the HTML
+pages use the service raw.githack.com, which properly renders the HTML
+file for convenient viewing (a direct link to the file on GitHub or
+GitLab would display the raw HTML).
+
+\subsubsection*{Installation}
+
+Installation of the workflowr package itself is easy because it is
+available for download from CRAN. The user does not need to install Git
+because workflowr uses the minimal Git library libgit2, via the R
+package git2r. Most workflowr users also use RStudio, which installs
+pandoc. Advanced users can directly install Git and pandoc for more
+control and flexibility if desired.
+
+\subsubsection*{Customization}
+
+The settings specified in \verb|analysis/_site.yml| are passed to the
+function \verb|html_document()| from the rmarkdown package. The settings in
+\verb|_workflowr.yml| are read by \verb|wflow_html()| when implementing the
+reproducibility features. For example, instead of recording the session
+information with sessionI\verb|nfo()|, a user can add the line
+\verb|sessioninfo: "devtools::session_info()"| to \verb|_workflowr.yml|
+to use the version from the devtools package.
+
+\subsubsection*{Miscellaneous}
+
+The workflowr commands can be invoked from any project subdirectory
+(similar to how Git commands work). This is achieved by searching for
+the RStudio project file at the root of the project using the R package
+rprojroot.
+
+The workflowr package can be configured to execute the R Markdown files
+in a different directory from where they are saved. This execution
+directory is controlled by the rmarkdown option \verb|knit_root_dir|,
+which is set in \verb| _workflowr.yml| and read by \verb|wflow_html()| before
+executing the code. By default, new projects execute the R Markdown code
+chunks in the root directory.
+
+
+\section*{Use cases}
+
+A workflowr website is useful for any situation in which a user wishes
+to organize and share reproducible computational results. The most
+common use cases include:
+
+\begin{itemize}
+
+\item \textbf{Single-user research website:} A researcher working solo
+on a project can track her intermediate results and easily share the
+latest results by sending the URL for a given analysis to her
+colleagues.
+
+\begin{itemize}
+
+\item
+\href{https://davismcc.github.io/fibroblast-clonality/}{fibroblast-clonality}
+
+\item \href{https://jean997.github.io/rccSims/}{rccSims}
+
+\item
+\href{https://brimittleman.github.io/threeprimeseq/}{threeprimeseq}
+
+\item \href{https://lsun.github.io/truncash/}{truncash}
+
+\end{itemize}
+
+\item \textbf{Collaborative research website:} Because workflowr uses
+the version control system Git, multiple researchers can collaborate on
+a research project using Git and a Git-hosting site (e.g. GitHub,
+GitLab, etc.). By using workflowr, they will know the results of their
+collaborator’s analyses are reproducible by reading the workflowr
+report.
+
+\begin{itemize}
+
+\item \href{https://jdblischak.github.io/fucci-seq/}{fucci-seq}
+
+\item
+\href{https://jdblischak.github.io/singlecell-qtl/}{singlecell-qtl}
+
+\end{itemize}
+
+\item \textbf{Course website:} Any course or workshop that aims to teach
+computational methods can benefit from workflowr. The research website
+makes it easy to disseminate the content to the learners, and the
+reproducibility report confirms that they should be able to run the code
+themselves.
+
+\begin{itemize}
+
+\item \href{https://annakrystalli.me/intro-r-gis/}{intro-r-gis}
+
+\item
+\href{https://xiangzhu.github.io/stanford-stats141/}{stanford-stats141}
+
+\end{itemize}
+
+\end{itemize}
+
+
+\section*{Summary}
+
+The workflowr R package aims to lower the barrier to open and
+reproducible computational results. It is simple to install, easy to
+learn since it builds on the popular R programming language and R
+Markdown format for literate programming, and extremely customizable
+should users desire to learn the intricacies of Git, HTML, and CSS.
+
+The first official release of workflowr was made available for download
+from CRAN in April 2018. The core functionality has been stable and will
+continue to be. In the future, we plan to implement the following
+enhancements:
+
+\begin{itemize}
+
+\item Provide documentation and helper functions to support hosting the
+workflowr website on additional platforms. Because it is a static
+website, it could be hosted on many different platforms such as GitLab,
+Netlify, Heroku, etc.
+
+\item Create a centralized website for registering and sharing workflowr
+projects. In order to better promote open science, we would like to make
+it easier for other interested researchers to discover existing
+workflowr projects.
+
+\item Implement basic support for small pipelines. Currently the only
+way to have workflowr execute R Markdown files in a specific order is to
+name them in alphanumeric order. In the future, we plan to make it
+possible to specify which R Markdown files depend on each other.
+However, since it will still be focused only on R Markdown files, users
+will still be encouraged to use dedicated pipeline software to build
+complex data analysis pipelines.
+
+\end{itemize}
+
+While workflowr aims to facilitate reproducible research, it is of
+course not foolproof. Major limitations include 1) versioning of large
+data files, 2) managing the computational environment, and 3) willful
+tampering. The workflowr package ensures that each HTML results file was
+created from a specific, known version of the corresponding R Markdown
+file, which is critical for reproducibility. However, if any imported
+data files are not versioned by Git (or are out-of-date), then the
+results will not be reproducible. This is mainly an issue for large data
+files. Users are recommended to use Git LFS or similar software to
+version large data files. Managing software dependencies is complex, and
+there exist many solutions ranging from language-specific package
+managers (e.g. packrat) to operating-system-level virtualization (e.g.
+Docker). Instead of prescribing one solution over others, the workflowr
+package simply records the session information that produces each
+result, and otherwise leaves each user to decide how best to manage this
+complexity. Lastly, the development history recorded by Git can be
+edited. Thus while useful for transparency, it cannot be considered an
+immutable record (e.g. like that provided by a blockchain).
+
+
+\section*{Data availability}
+
+Not applicable
+
+
+\section*{Software availability}
+
+The workflowr software is open-source and available at the links below:
+
+\begin{enumerate}
+
+\item CRAN: \url{https://cran.r-project.org/package=workflowr}
+
+\item Source code: \url{https://github.com/jdblischak/workflowr}
+
+\item Documentation: \url{https://jdblischak.github.io/workflowr/}
+
+\item Zenodo: \url{https://zenodo.org/badge/latestdoi/75893305}
+
+\item License: \href{https://choosealicense.com/licenses/mit/}{MIT}
+
+\end{enumerate}
+
+
+\section*{Author Contributions}
+
+JDB: Conceptualization, Software
+
+PC: Software
+
+MS: Conceptualization, Funding Acquisition, Supervision
+
+
+\section*{Competing interests}
+
+No competing interests were disclosed.
+
+
+\section*{Grant information}
+
+This work was supported by the Gordon and Betty Moore Foundation [Grant
+number \#4559].
+
+The funders had no role in study design, data collection and analysis,
+decision to publish, or preparation of the manuscript.
+
+
+\section*{Acknowledgments}
+
+We are very thankful to workflowr
+\href{https://github.com/jdblischak/workflowr/graphs/contributors}{contributors}
+for helping improve the package. We are also grateful for workflowr
+users for testing the package and providing feedback---thanks especially
+to \href{https://github.com/LSun}{Lei Sun},
+\href{https://github.com/xiangzhu}{Xiang Zhu},
+\href{https://github.com/NKweiwang}{Wei Wang}, and other members (past
+and present) of the Stephens lab.
+
+We are also grateful to the authors and contributors of the many great
+open source packages that the workflowr package uses. Especially
+critical for workflowr are the R packages
+\href{https://cran.r-project.org/web/packages/git2r/index.html}{git2r},
+\href{https://github.com/yihui/knitr}{knitr}, and
+\href{http://rmarkdown.rstudio.com/}{rmarkdown}.
+
+
+{\small\bibliographystyle{unsrtnat}
+
+\bibliography{references}}
+
+\end{document}
