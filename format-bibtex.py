@@ -44,14 +44,9 @@ for k in keys:
     if entrytype == "article":
         for field in ["author", "year", "title", "journal", "volume", "number",
                       "pages"]:
-            # For consortia, encase author name in double brackets so that the
-            # full name is used instead of parsing it into a first and last name
             if field not in entry.keys():
                 continue
-            if field == "author" and "," not in entry["author"]:
-                out = out + "%s = {{%s}},\n"%(field, entry[field])
-            else:
-                out = out + "%s = {%s},\n"%(field, entry[field])
+            out = out + "%s = {%s},\n"%(field, entry[field])
     else:
         fields_all = list(entry.keys())
         fields_all.sort()
@@ -64,10 +59,7 @@ for k in keys:
             if field == "link":
                 entry["url"] = entry["link"]
                 field = "url"
-            if field == "author" and "," not in entry["author"]:
-                out = out + "%s = {{%s}},\n"%(field, entry[field])
-            else:
-                out = out + "%s = {%s},\n"%(field, entry[field])
+            out = out + "%s = {%s},\n"%(field, entry[field])
 
     if "doi" in entry.keys():
         out = out + "%s = {%s},\n"%("doi", entry["doi"])
