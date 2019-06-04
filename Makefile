@@ -18,4 +18,4 @@ $(NAME).tex: $(NAME).docx
 clean:
 	rm -f $(NAME)*.aux $(NAME).bbl $(NAME).blg $(NAME).dvi \
               $(NAME).log $(NAME).out $(NAME).pdf \
-              *converted-to.pdf ../figure/*converted-to.pdf
+              *cpt figures/*converted-to.pdf

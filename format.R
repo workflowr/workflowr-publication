@@ -28,4 +28,13 @@ lines_out <- str_replace_all(lines_out,
 # Replace # with \# for LaTeX
 lines_out <- str_replace_all(lines_out, "#", "\\\\#")
 
+# Remove empty [] where figures were in Word document
+lines_out <- str_replace_all(lines_out, "^\\[\\]$", "")
+
+# Reference figures by labels
+lines_out <- str_replace_all(lines_out, "FIGURE 1", "Figure \\\\ref\\{fig:organized}\\")
+lines_out <- str_replace_all(lines_out, "FIGURE 2", "Figure \\\\ref\\{fig:publish}\\")
+lines_out <- str_replace_all(lines_out, "FIGURE 3", "Figure \\\\ref\\{fig:versioned}\\")
+lines_out <- str_replace_all(lines_out, "FIGURE 4", "Figure \\\\ref\\{fig:reproducible}\\")
+
 writeLines(lines_out, con = fname)
