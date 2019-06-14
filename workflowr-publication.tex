@@ -37,13 +37,35 @@ way}
 
 \begin{abstract}
 
-300 words
+\# Note: Abstract can be as long as 300 words.
+
+The workflowr R package helps scientists create code and results that
+are organized and reproducible, well-documented, and more readily
+communicated with other scientists. Workflowr provides a core set of
+commands that can be easily integrated into research practice to make
+programming projects more reproducible and accessible. The core
+workflowr commands implement four key features of reproducible code: (1)
+automatic project structure intended to promote better organization of
+data, code and results; (2) packaged code and results that are assigned
+a uniquely identifiable label, then incorporated into a project
+development history to document progress; (3) automated "reproducibility
+checks" that accompany each packaged collection of code and results; and
+(4) tools to facilitate online sharing of project code and results. To
+achieve these reproducibility features, workflowr integrates version
+control (Git), literate programming tools (knitr, R Markdown), and
+static Web hosting (e.g., via GitHub or GitLab Pages) into a simple and
+uniform R interface. Our aim is to encourage \textit{all} scientists,
+regardless of background,to organize and share their reproducible
+research code. The workflowr R package is open source and available on
+CRAN, with full documentation and source code available at
+https://github.com/jdblischak/workflowr.
 
 \end{abstract}
 
 \section*{Keywords}
 
-reproducibility, open science, workflow, R
+reproducibility, open science, workflow, R, interactive programming,
+literate programming, version control
 
 \clearpage
 
@@ -52,275 +74,118 @@ reproducibility, open science, workflow, R
 
 \section*{Introduction}
 
-Science should be independently verifiable and extendable [ref]. As
-computational methods become increasingly important to many disciplines
-across academia and industry, this requires code that can be accessed
-and run , and outputs that can be corroborated against those in the
-published article \cite{Buckheit1995, Gentleman2005, Peng2011, Ince2012,
-Morin2012, Sandve2013, Easterbrook2014, Stodden2016, Lowndes2017}.
-Unfortunately, this is not commonly achieved in practice
-\cite{Ioannidis2009, Ioannidis2014}. One barrier is that the code is
-typically written by domain specialists that are experts in their field
-of study, but are unlikely to become experts in computer programming
-\cite{Wilson2014b}. With the advent of interactive programming
-environments such as R \cite{R2019} and python[ref], accessible
-interfaces for these programming environments such as RStudio
-\cite{RStudio2018} and Jupyter \cite{Kluyver2016}, and a growing
-community supporting these open source tools, this has made it possible
-to implement complex or large-scale analyses with little formal training
-in computing and informatics. But this also means that there is now a
-larger number of analysts producing less reproducible analyses. Further,
-some features of interactive programming that make it incredibly
-powerful for quickly developing complex analyses—such as the ability to
-construct and evaluate program fragments, otherwise known as the
-"read-eval-print" loop \cite{Findler2002}— can also introduce subtle
-bugs or incompatibilities, impeding development of reproducible
-analyses. In light of this situation, all researchers need accessible
-tools that integrate with interactive programming and can ease them into
-more reproducible and collaborative code development practices without a
-great burden.
+A central tenet of the scientific method is that results should be
+independently verifiable --- and, ideally, extendible --- by other
+researchers [ref]. As computational methods play an increasing role in
+many disciplines, key scientific results are very often produced by
+computer code. Verifying and extending such results requires that the
+code be ``reproducible''; that is, it can be accessed and run, with
+outputs that can be corroborated against published articles
+\cite{Buckheit1995, Gentleman2005, Peng2011, Ince2012, Morin2012,
+Sandve2013, Easterbrook2014, Stodden2016, Lowndes2017}. Unfortunately,
+this ideal is not usually achieved in practice; most scientific articles
+do not come with code that can reproduce their results
+\cite{Ioannidis2009, Ioannidis2014, Stodden2018}.
 
-A second barrier to reproducibility is that source code and data are
-often not made publicly available in a form that is easy to retrieve and
-use \cite{Stodden2018}. There are now many Web resources dedicated to
-publishing and disseminating code that are free for academics to use
-[give examples]. However, adopting these resources within routine
-research practice requires considerable comfort level with tools that
-many if not most scientists are not familiar with. Moreover, it requires
-an investment of time and effort to organize project files for
-distribution in a logical manner. This suggests the need for tools that
-can facilitate the process of organizing code and data (when not
-sensitive) and disseminating using existing Web resources that are
-already freely available to the scientific community.
+There are many barriers to sharing reproducible code and corresponding
+computational results. One barrier is simply that keeping code and
+results sufficiently organized and documented is difficult—it is
+burdensome even for experienced programmers who are well-trained in
+relevant computational tools such as version control (discussed later),
+and even harder for the many domain scientists who write code with
+little formal training in computing and informatics \cite{Wilson2014b}.
+Further, modern interactive computer environments (e.g., R, python),
+while greatly enhancing code development \cite{Findler2002}, also make
+it easier to create results that are irreducible. To take one example,
+it is all too easy to run interactive code without recording or
+controlling the seed of a pseudo-random number generator, or generate
+results in a ``contaminated'' environment that contains objects whose
+values are critical but unrecorded. Both these issues can lead to
+results that are difficult or impossible to reproduce. Finally, even
+when analysts produce code that is reproducible in principle, sharing it
+in a way that makes it easy for others to retrieve and use (e.g., via
+GitHub or Bitbucket) involves technologies that many scientists are not
+familiar with \cite{Stodden2018}.
 
-We have developed an R \cite{R2019} package, "workflowr", to address
-these two barriers: reproducibility of computational outputs, and
-publishing of source code and data used to generate these outputs. We
-call the R package workflowr because it is aimed at facilitating a
-"workflow"—a sequence of steps to be repeated and eventually integrated
-into research practice—for making projects reproducible and accessible.
+In light of this, there is a pressing need for easy-to-use interactive
+programming tools to help analysts keep code and results organized and
+reproducible, document progress, and disseminate code and results to the
+scientific community. We have developed an open source R \cite{R2019}
+package, "workflowr", to help address this need. The workflowr package
+aims to instill a particular "workflow"—a sequence of steps to be
+repeated and integrated into research practice—that help make projects
+reproducible and accessible. To achieve this, workflowr integrates four
+key tools of reproducible code development: (1) version control
+\cite{Loeliger2012, Chacon2014}; (2) literate programming
+\cite{Xie2015}; (3) automatic "reproducibility safeguards”—simple
+checks, like setting and recording the random number seed, that improve
+code reproducibility; and (4) static website creation from R source
+code. These features exploit powerful existing tools, whose mastery
+would take considerable study. However, the workflowr interface is
+designed to be simple, so that learning it does not become another
+barrier in itself, and novice users can quickly enjoy its many benefits.
+By simply following the workflowr workflow, R users can create projects
+whose results and figures are easily accessible on a static website ---
+therefore conveniently shareable with collaborators by sending them a
+URL --- and accompanied by source code and reproducibility safeguards.
+The Web-based interface, updated with version control, also makes it
+easy to browse the project history --- including previous versions of
+figures, other results, and the code used to produce them. And all this
+is possible with minimal experience in version control systems and Web
+technologies.
 
-The workflowr interface is intentionally simple so that learning to use
-it does not become another barrier in itself. To this end, workflowr
-integrates four "core competencies" of computational reproducibility in
-one framework: (1) version control \cite{Loeliger2012, Chacon2014}, (2)
-literate programming \cite{Xie2015}, (3) code review [ref], and (4)
-static website rendering and distribution from source code. Although,
-individually, each of the core competencies is difficult to master, we
-show that expertise in these core competencies is not needed to reap
-substantial benefits from their use. In the remainder of this monograph,
-we explain how the core competencies are integrated into a single
-interface with simple commands, and why providing a highly integrated
-interface greatly facilitates computational reproducibility and "Open
-Science".
+The workflowr package builds on several software technologies and R
+packages, without which this work would have not been possible. First,
+workflowr builds on the invaluable R literate programming system
+provided by the knitr and rmarkdown packages \cite{}, which in turn
+build on pandoc \cite{}, the "Markdown" markup language [ref], and
+various Web technologies such as Cascading Style Sheets and Bootstrap
+[ref]. Workflowr augments rmarkdown with additional features such as the
+reproducibility safeguards, and adds integration with Git \cite{}.
+Although Git was originally intended to support large-scale, distributed
+software development \cite{}, in workflowr it is primarily used for a
+different purpose: to record, and provide access to, the development
+history of a project. Workflowr also uses another feature of
+Git—"remotes"—to enable collaborative project development across
+multiple locations, and to help users create browsable projects on the
+internet via integrations with popular online services such as GitHub
+Pages and GitLab Pages. These features are implemented via the R package
+git2r, which provides an interface to the libgit2 C library. Finally,
+beyond extending the R programming language, workflowr also integrates
+seamlessly with the popular RStudio interactive development environment.
 
-\subsection*{Overview of workflowr}
+In addition to these tools on which workflowr directly builds, there are
+many other related tools that directly or indirectly advance open and
+reproducible data analysis. A comprehensive review of such tools is
+beyond the scope of this article, but we note that many of these tools
+are complementary to workflowr in that they tackle aspects of
+reproducibility that workflowr currently leaves to the user: for
+example, management of computational environments and/or dependencies,
+locally or on "the cloud" (e.g., conda, Homebrew, Singularity, Docker,
+Kubernetes, packrat, checkpoint, switchr, Binder, rsuite); development
+and management of computational pipelines (e.g., GNU Make, Snakemake,
+drake); managing or archiving data objects (e.g., archivist, cacher,
+Dryad, Zenodo); and distribution of open source software (e.g., CRAN,
+Bioconductor, Bioconda). Most of these tools or services could be used
+in combination with workflowr. Lastly, we note that there are many other
+useful tools whose features overlap with those of workflowr, which would
+make it difficult or impossible to use in combination. These include
+standalone software tools such as ActivePapers
+\url{https://www.activepapers.org/}, adapr \cite{Gelfond2018},
+ProjectTemplate, rrtools, Sumatra
+\url{https://pythonhosted.org/Sumatra/}, as well as online computing
+platforms such as Code Ocean, Gigantum, and The Whole Tale. We document
+similar R packages at
+\url{https://github.com/jdblischak/ctv-project-workflows}.
 
-Main points:
-
-• workflowr is a tool for managing the development history of a data
-analysis project—specifically, the source code files generating the
-analyses, and the output files containing the results of these analyses.
-
-• In workflowr, the main "workflow" for developing an analysis project
-consists of three cycles, or loops: (1) an inner-most loop, the
-"edit-build" cycle, in which the user works on the analysis
-interactively, and tests the analysis code using the "build" interface
-(similar to the "read-eval-print" loop [ref]); (2) an outer loop, the
-"build-publish" cycle, in which the user develops the code into a
-working, satisfactory version, then the "publish" interface validates
-the code in a testing environment to better ensure that the results are
-reproducible, then, if the tests succeed, a permanent snapshot of the
-analysis is packaged in a form that facilitates running the code and
-reproducing the results in the future; and (3) a "publish-push" cycle,
-in which the development history is recorded until it is ready to be
-disseminated to the team (in a private distribution channel), or to the
-community (in a public distribution channel). (For proper collaboration
-in which multiple team members are developing the analysis, this cycle
-would also include merging of multiple development histories, which we
-explain in more detail below.) All these processes are automated by a
-few lightweight functions in R, allowing the user to focus on high-level
-project tasks with minimal distraction from mundane of aspects of
-reproducibility. The ultimate design aim of workflowr is to integrate
-these workflows as seemlessly as possible into existing interactive
-programming practices in R.
-
-• Version control. Each time an analysis is published, a snapshot of the
-source code and packaged results is created. We use the Git distributed
-data management system [ref] to create these snapshots. Although Git was
-originally intended to support large-scale, distributed software
-development such as the Linux kernel [ref], here it is used to implement
-a key reproducibility feature: each analysis version is associated with
-a label that can be used to identify a unique version of published code
-and results in the project development history. This is instrumental for
-collaborating on projects so that team members can communicate about
-development history of an anlaysis. Workflowr also uses another feature
-of Git—"remotes"—to enable distributed project development across
-multiple locations; this allows, for example, a single user to manage
-project versions on multiple computers, or allows team members to
-contribute to a single project.
-
-• Literate programming. Each analysis is "published" by packaging it in
-a digestable form using literate programming tools. Although the ideas
-behind "literate programming" are not new [ref], only recently have
-tools advanced to a point that they work seemlessly in R. The
-technologies behind this include: (1) R Markdown [ref], a lightweight
-yet flexible platform-independent text format built from the "Markdown"
-markup language [ref] for combining freedom text and R code into "coding
-narratives" [ref]; (2) pandoc, a framework for converting a wide range
-of commonly used document formats [ref]; and (3) and the R packages
-knitr [ref] and rmarkdown [ref] that integrate pandoc capabilities into
-R to allow seemless generation of webpages from analyses implemented in
-R Markdown. Workflowr augments the generation of the webpages with
-additional reproducibility features.
-
-• Static websites: Finally, workflowr is closely integrated with popular
-online services such as GitHub Pages [ref] and GitLab Pages [ref] for
-hosting static webpages directly from a git repository. This allows the
-code and results to be easily shared and browsed.
-
-• Why we use R: interactive programming language widely used in science
-and data analysis, growing user community, R packages already developed
-implementing key functionality, easy installation process for major
-platforms (via CRAN).
-
-• workflowr is an R package that can be easily installed on CRAN
-("install.packages"), and versions in-development are available from
-GitHub. Distributed via MIT license to ensure as few restrictions as
-possible. Text to adapt from khmer paper: The khmer software consists of
-a core library implemented in C++, a CPython library wrapper implemented
-in C, and a set of Python driver scripts that make use of the library to
-perform various sequence analysis tasks. The software is currently
-developed on GitHub under https://github.com/dib-lab/khmer, and it is
-released under the BSD License. There is greater than 87% statement
-coverage under automated tests, measured on both C++ and Python code but
-primarily executed at the Python level.
-
-• Integrated with popular RStudio IDE (give example).
-
-• Help materials: We have extensive documentation, tutorials and user
-support.
-
-• Community: Contributions and feedback from community has improved
-product.
-
-• It is being used now: Refer to "use cases" section below.
-
-Additional supporting functions include… To facilitate reproducibility,
-workflowr provides a few high-level functions that automate the process
-of setting up an organized project directory, versioning both the source
-code and results, and executing the code reproducibly (e.g. setting the
-seed).
-
-To promote openness and collaboration, workflowr creates a static
-website that contains the results. It also provides documentation on how
-to host the website online using various free web hosting sites. With
-minimal knowledge of web technologies, a user can share their latest
-research with collaborators and colleagues by sending them a URL.
-
-In more detail, the workflowr R package integrates three main features:
-1) literate programming, 2) version control, and 3) static website
-hosting. Although some of these technologies are relatively new, they
-are nearing maturity. Literate programming is the concept of including
-descriptive prose, source code, and the generated results in the same
-document. R has great support for literate programming via the R
-packages knitr and rmarkdown. Because workflowr directly extends these
-popular packages, any valid R Markdown file can be included in a
-workflowr project. Specifically, workflowr uses the capabilities of the
-rmarkdown package to combine multiple R Markdown generated HTML files
-into a single website with a Bootstrap navigation bar. Version control
-is a software engineering technique for saving snapshots of source code
-during development. Analogous to writing software, versioning data
-analysis code (and potentially the results) is a good method for
-increasing transparency and reproducibility. Any interested user can
-inspect the history of the data analysis and also revert to a past
-version to recreate previous results. A currently popular version
-control tool is Git. The workflowr package runs Git commands using the R
-package git2r, which provides an interface to the libgit2 library, which
-is a minimal implementation of Git written in C. A static website
-consists of pre-made HTML webpages (in contrast to a dynamic website in
-which each page requires running server code to query a database).
-Because static websites are so cheap to host, there are many services
-that provide free static web hosting. This includes websites which
-provide hosting for Git repositories (e.g. GitHub, GitLab, Bitbucket).
-The workflowr R package provides helper functions and documentation for
-deploying the workflowr website for free using one of these Git hosting
-services. GitHub Pages and GitLab Pages are currently the most
-well-supported and well-documented options (and recommended for new
-users), but users can deploy the workflowr website using any service
-they prefer.
-
-\subsection*{Background on tools for reproducible data science}
-
-Many software tools, and guidelines for using them, have been developed
-that directly or indirectly advance open and reproducible data analysis.
-A comprehensive survey of these tools is beyond the scope of this
-article, but we give an overview of the key developments in order to
-situate our contribution.
-
-Tools and technologies we may want to mention in the background section:
-
-• Git
-
-• Jupyter (formerly IPython)
-
-• pandoc
-
-• knitr, rmarkdown, Sweave, and related tools (bookdown, blogdown,
-pkgdown, etc).
-
-• GitHub, GitLab
-
-• Zenodo
-
-• Pipeline management tools (GNU Make, Snakemake, etc).
-
-• Binder, Code Ocean
-
-• Package managers (Anaconda, Miniconda, Homebrew, etc.)
-
-• Package channels/repositories (CRAN, Bioconductor, Bioconda, etc).
-
-• Containers (Singularity, Docker, Kubernates, etc.).
-
-\href{https://github.com/benmarwick/rrtools}{rrtools} and other R
-packages to support
-\href{https://github.com/jdblischak/ctv-project-workflows/blob/master/ProjectWorkflows.md}{project
-workflows}
-
-The R community has had a long tradition of promoting reproducible
-research. It has great support for literate programming via knitr and
-rmarkdown and their derivatives (bookdown for books, blogdown for blogs,
-pkgdown for documentation). The workflowr package is similar to these
-packages since it is also an extension of rmarkdown, but instead of
-adding features to enable a new publishing format, it integrates version
-control with Git and other reproducibility features. Because workflowr
-creates an organized directory structure, it is similar to project
-framework packages like ProjectTemplate and adapr \cite{Gelfond2018}. A
-big difference is that workflowr is less restrictive. In other words, no
-workflowr-specific functions need to be integrated into the R code, and
-thus the code and data in a workflowr project could be extracted with
-minimal effort. Because the main goal of workflowr is to track and share
-development of an exploratory data analysis project, it is not ideal for
-building complicated multi-step pipelines. Dedicated pipeline software
-such as the R package drake are designed to handle dependencies and
-submit long-running code to compute nodes. There are also R packages
-that help manage software dependencies (packrat, switchr) or archive
-data objects (archivist, cacher), but these could be used in conjunction
-with workflowr since it does not directly support these features.
-Comparable software available for Python users would be Jupyter,
-ActivePapers \url{https://www.activepapers.org/}, and Sumatra
-\url{https://pythonhosted.org/Sumatra/}. Lastly, there exist
-feature-rich computing platforms for reproducible research (Open Science
-Framework \url{https://osf.io/}, The Whole Tale
-\url{https://wholetale.org/}, Gigantum
-\url{https://docs.gigantum.com/}). These ambitious projects provide
-great support for open and reproducible research, but of course suffer
-from vendor lock-in (and an uncertain future). In contrast, the
-workflowr package can be installed and used anywhere an R user normally
-writes their R code, and the static website it produces can be hosted on
-any web server (even if only viewed by the user on their local
-computer).
+The workflowr R package is available from CRAN
+(https://cran.r-project.org/package=workflowr) and GitHub
+(https://github.com/jdblischak/workflowr), and is distributed under the
+flexible open source MIT license. Extensive documentation, tutorials and
+user support can be found on the GitHub site. In the remainder of this
+article, we describe the workflowr interface, explain its design, and
+give examples illustrating how workflowr is used in practice (see "Use
+Cases").
 
 
 \section*{Methods}
