@@ -11,7 +11,7 @@ all: $(NAME).pdf
 	pdflatex -shell-escape $(NAME)
 	pdflatex -shell-escape $(NAME)
 
-$(NAME).tex: $(NAME).docx
+$(NAME).tex: $(NAME).docx format.R
 	pandoc -t plain -o $@ $<
 	Rscript format.R $@
 
@@ -19,3 +19,6 @@ clean:
 	rm -f $(NAME)*.aux $(NAME).bbl $(NAME).blg $(NAME).dvi \
               $(NAME).log $(NAME).out $(NAME).pdf \
               *cpt figures/*converted-to.pdf
+
+view: $(NAME).pdf
+	evince $< &

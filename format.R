@@ -17,8 +17,41 @@ if (length(args) > 1) {
 lines_in <- readLines(fname)
 lines_out <- lines_in
 
-# wflow_start -> \verb|wflow_start()|
-lines_out <- str_replace_all(lines_out, "([a-z,_]+\\(\\))", "\\\\verb|\\1|")
+# Format function names (brute force b/c getting clever with regex was hard to
+# maintain), e.g. wflow_start() -> \texttt{wflow\_start()}
+lines_out <- str_replace_all(lines_out,
+                             "wflow_start\\(\\)",
+                             "\\\\texttt{wflow\\\\_start()}")
+lines_out <- str_replace_all(lines_out,
+                             "wflow_build\\(\\)",
+                             "\\\\texttt{wflow\\\\_build()}")
+lines_out <- str_replace_all(lines_out,
+                             "wflow_publish\\(\\)",
+                             "\\\\texttt{wflow\\\\_publish()}")
+lines_out <- str_replace_all(lines_out,
+                             "wflow_status\\(\\)",
+                             "\\\\texttt{wflow\\\\_status()}")
+lines_out <- str_replace_all(lines_out,
+                             "wflow_git_push\\(\\)",
+                             "\\\\texttt{wflow\\\\_git\\\\_push()}")
+lines_out <- str_replace_all(lines_out,
+                             "wflow_use_github\\(\\)",
+                             "\\\\texttt{wflow\\\\_use\\\\_github()}")
+lines_out <- str_replace_all(lines_out,
+                             "wflow_use_gitlab\\(\\)",
+                             "\\\\texttt{wflow\\\\_use\\\\_gitlab()}")
+lines_out <- str_replace_all(lines_out,
+                             "wflow_site\\(\\)",
+                             "\\\\texttt{wflow\\\\_site()}")
+lines_out <- str_replace_all(lines_out,
+                             "wflow_git_pull\\(\\)",
+                             "\\\\texttt{wflow\\\\_git\\\\_pull()}")
+lines_out <- str_replace_all(lines_out,
+                             "wflow_html\\(\\)",
+                             "\\\\texttt{wflow\\\\_html()}")
+lines_out <- str_replace_all(lines_out,
+                             "wflow_git_remote\\(\\)",
+                             "\\\\texttt{wflow\\\\_git\\\\_remote()}")
 
 # Fix devtools::session_info()
 lines_out <- str_replace_all(lines_out,
