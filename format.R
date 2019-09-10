@@ -52,14 +52,27 @@ lines_out <- str_replace_all(lines_out,
 lines_out <- str_replace_all(lines_out,
                              "wflow_git_remote\\(\\)",
                              "\\\\texttt{wflow\\\\_git\\\\_remote()}")
-
-# Fix devtools::session_info()
 lines_out <- str_replace_all(lines_out,
-                             "\\\\verb\\|session_info\\(\\)\\|",
-                             "session_info\\(\\)")
+                             "render\\(\\)",
+                             "\\\\texttt{render()}")
+lines_out <- str_replace_all(lines_out,
+                             "render_site\\(\\)",
+                             "\\\\texttt{render\\\\_site()}")
+lines_out <- str_replace_all(lines_out,
+                             "html_document\\(\\)",
+                             "\\\\texttt{html\\\\_document()}")
+lines_out <- str_replace_all(lines_out,
+                             "sessionInfo\\(\\)",
+                             "\\\\texttt{sessionInfo()}")
+lines_out <- str_replace_all(lines_out,
+                             "set.seed\\(\\)",
+                             "\\\\texttt{set.seed()}")
 
 # Replace # with \# for LaTeX
 lines_out <- str_replace_all(lines_out, "#", "\\\\#")
+
+# Replace & with \& for LaTeX
+lines_out <- str_replace_all(lines_out, "&", "\\\\&")
 
 # Remove empty [] where figures were in Word document
 lines_out <- str_replace_all(lines_out, "^\\[\\]$", "")
