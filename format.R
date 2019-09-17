@@ -53,6 +53,9 @@ lines_out <- str_replace_all(lines_out,
                              "wflow_git_remote\\(\\)",
                              "\\\\texttt{wflow\\\\_git\\\\_remote()}")
 lines_out <- str_replace_all(lines_out,
+                             "wflow_git_config\\(\\)",
+                             "\\\\texttt{wflow\\\\_git\\\\_config()}")
+lines_out <- str_replace_all(lines_out,
                              "render\\(\\)",
                              "\\\\texttt{render()}")
 lines_out <- str_replace_all(lines_out,
@@ -76,6 +79,10 @@ lines_out <- str_replace_all(lines_out, "&", "\\\\&")
 
 # Remove empty [] where figures were in Word document
 lines_out <- str_replace_all(lines_out, "^\\[\\]$", "")
+
+# Fix \texttt{\_workflowr.yml} split over 2 lines
+lines_out <- str_replace(lines_out, "\\\\texttt\\{\\\\$", "")
+lines_out <- str_replace(lines_out, "^_workflowr.yml", "\\\\texttt\\{\\\\_workflowr.yml")
 
 # Reference figures by labels
 lines_out <- str_replace_all(lines_out, "FIGURE 1", "Figure \\\\ref\\{fig:organized}\\")
