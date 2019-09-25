@@ -90,4 +90,46 @@ lines_out <- str_replace_all(lines_out, "FIGURE 2", "Figure \\\\ref\\{fig:publis
 lines_out <- str_replace_all(lines_out, "FIGURE 3", "Figure \\\\ref\\{fig:versioned}\\")
 lines_out <- str_replace_all(lines_out, "FIGURE 4", "Figure \\\\ref\\{fig:reproducible}\\")
 
+# Bold names of software
+software <- c(
+  "adapr",
+  "archivist",
+  "cacher",
+  "checkpoint",
+  "conda",
+  "devtools",
+  "Docker",
+  "drake",
+  "Git LFS", # Needs to come before Git
+  "Git",
+  "git2r",
+  "GNU Make",
+  "Homebrew",
+  "Kubernetes",
+  "libgit2",
+  "msigdbr",
+  "packrat",
+  "ProjectTemplate",
+  "rmarkdown",
+  "rrtools",
+  "RStudio",
+  "RSuite",
+  "Seurat",
+  "Singularity",
+  "Snakemake",
+  "Sumatra",
+  "switchr",
+  "usethis",
+  "workflowr",
+  "Workflowr"
+)
+#browser()
+#lines_out <- str_replace_all(lines_out, " workflowr", " \\\\textbf\\{workflowr}")
+
+for (s in software) {
+ lines_out <- str_replace_all(lines_out,
+                              sprintf(" (%s)\\b", s),
+                              " \\\\textbf\\{\\1}")
+}
+
 writeLines(lines_out, con = fname)
