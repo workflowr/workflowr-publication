@@ -45,26 +45,31 @@ WAY}
 
 % Note: Abstract can be as long as 300 words.
 
-Our aim is to encourage all scientists, regardless of background, to
-develop reproducible research code, and share it. The workflowr R
-package helps scientists create code and results that are organized,
-reproducible, well-documented, and more effectively communicated with
-other scientists. Workflowr provides a core set of commands that are
-easily integrated into research practice to make projects more
-reproducible and accessible. The core workflowr commands implement four
-key features of reproducible code: (1) workflowr provides an automatic
-project structure is provided that promotes better organization of data,
-code and results; (2) workflowr incorporates new results, and the code
-used to generate these results, are incorporated into a project
-development history; (3) workflowr accompanies each collection of code
-and results with a “reproducibility report” ; and (4) workflowr provides
-additional tools to facilitate online sharing of the project and its
-development history. To achieve these reproducibility features,
-workflowr integrates version control (Git), literate programming tools
-(knitr, R Markdown) and static website hosting (e.g., GitHub Pages) into
-a simple, uniform interface in R. The workflowr R package is open source
-and available on CRAN, with full documentation and source code available
-at \url{https://github.com/jdblischak/workflowr}.
+Making scientific analyses reproducible, well documented, and easily
+shareable is crucial to maximizing their impact and ensuring that others
+can build on them. However, accomplishing these goals is not easy,
+requiring careful attention to organization, workflow, and familiarity
+with tools that are not a regular part of every scientist's toolbox. We
+have developed an R package, workflowr, to help all scientists,
+regardless of background, overcome these challenges, and make their
+scientific analyses more organized, reproducible, well-documented, and
+shareable. Workflowr aims to instill a particular "workflow" --- a
+sequence of steps to be repeated and integrated into research practice
+--- that helps make projects more reproducible and accessible.This
+workflow integrates four key elements: (1) version control (via Git);
+(2) literate programming (via R Markdown); (3) automatic checks and
+safeguards that improve code reproducibility; and (4) sharing code and
+results via a browsable website. These features exploit powerful
+existing tools, whose mastery would take considerable study. However,
+the workflowr interface is simple enough that novice users can quickly
+enjoy its many benefits. By simply following the "workflowr workflow", R
+users can create projects whose results, figures, and development
+history are easily accessible on a static website --- thereby
+conveniently shareable with collaborators by sending them a URL --- and
+accompanied by source code and reproducibility safeguards. The workflowr
+R package is open source and available on CRAN, with full documentation
+and source code available at
+\url{https://github.com/jdblischak/workflowr}.
 
 \end{abstract}
 
@@ -141,26 +146,27 @@ can be achieved with minimal experience in version control systems and
 Web technologies.
 
 The workflowr package builds on several software technologies and R
-packages, without which this work would have been impossible. workflowr
-builds on the invaluable R Markdown ("Rmd") literate programming system
+packages, without which this work would have been impossible. Workflowr
+builds on the invaluable R Markdown literate programming system
 implemented in knitr \cite{Xie2014, knitr} and rmarkdown \cite{Xie2018,
 rmarkdown}, which in turn build on pandoc, the "Markdown" markup
 language, and various Web technologies such as Cascading Style Sheets
 and Bootstrap \cite{Spurlock2013}. Several popular R packages extend
 knitr and rmarkdown for specific aims such as writing blogs (blogdown),
-monographs (bookdown) and software documentation (pkgdown). Analogously,
-workflowr augments rmarkdown with additional features such as the
-reproducibility safeguards, and adds integration with Git. Git was
-designed to support large-scale, distributed software development, but
-in workflowr it serves a different purpose: to record, and provide
-access to, the development history of a project. Workflowr also uses
-another feature of Git, "remotes", to enable collaborative project
-development across multiple locations, and to help users create
-browsable projects via integrations with popular online services such as
-GitHub Pages and GitLab Pages. These features are implemented using the
-R package git2r, which provides an interface to the libgit2 C library.
-Finally, beyond extending the R programming language, workflowr is also
-integrated with the popular RStudio interactive development environment.
+monographs (bookdown), and software documentation (pkgdown).
+Analogously, workflowr extends rmarkdown with additional features such
+as the reproducibility safeguards, and adds integration with the version
+control system Git \cite{Loeliger2012, Chacon2014}. Git was designed to
+support large-scale, distributed software development, but in workflowr
+it serves a different purpose: to record, and provide access to, the
+development history of a project. Workflowr also uses another feature of
+Git, "remotes", to enable collaborative project development across
+multiple locations, and to help users create browsable projects via
+integrations with popular online services such as GitHub Pages and
+GitLab Pages. These features are implemented using the R package git2r,
+which provides an interface to the libgit2 C library. Finally, beyond
+extending the R programming language, workflowr is also integrated with
+the popular RStudio interactive development environment.
 
 In addition to the tools upon which workflowr directly builds, there are
 many other related tools that directly or indirectly advance open and
@@ -197,7 +203,8 @@ both place considerable emphasis on managing and documenting
 dependencies (software and data), whereas workflowr only records this
 information. In contrast, workflowr places more emphasis on literate
 programming --- the publishing of text and code in a readable form ---
-and more closely integrates other features with literate programming.
+and more closely integrates other features such as tracking project
+development history via Git with literate programming.
 
 The workflowr R package is available from CRAN
 (https://cran.r-project.org/package=workflowr) and GitHub
@@ -205,8 +212,7 @@ The workflowr R package is available from CRAN
 flexible open source MIT license. Extensive documentation, tutorials and
 user support can be found at the GitHub site. In the remainder of this
 article, we describe the workflowr interface, explain its design, and
-give examples illustrating how workflowr is used in practice (see "Use
-Cases").
+give examples illustrating how workflowr is used in practice.
 
 
 \section*{Methods}
@@ -222,22 +228,22 @@ started with workflowr"} vignette.
 
 \subsection*{Operation}
 
-For basic usage, only five functions are needed:
+For basic usage, only five functions are needed (summarized here, and
+described in more detail later):
 
 \begin{itemize}
 
 \item \texttt{wflow\_start()} initializes a new project, including the template
 directory structure (Figure 1A);
 
-\item \texttt{wflow\_build()} renders the webpages from the Rmd analysis files,
-with reproducibility safeguards in place;
+\item \texttt{wflow\_build()} renders webpages from R Markdown (Rmd) analysis
+files, with reproducibility safeguards in place;
 
-\item \texttt{wflow\_publish()} renders the webpages and commits them to the
-project development history, together with the code that generated these
-webpages;
+\item \texttt{wflow\_publish()} renders the webpages and updates the project
+development history—it calls \texttt{wflow\_build()}, commits the webpages, and
+commits the code used to create the webpages;
 
-\item \texttt{wflow\_status()} is used to check the status of the project files;
-and
+\item \texttt{wflow\_status()} reports the status of the project files; and
 
 \item \texttt{wflow\_git\_push()} uploads the results from the user's local
 repository to a website hosting service.
@@ -274,14 +280,14 @@ needed to begin a workflowr project. The default directory structure
 encourages users to organize their files as the project progresses.
 (This is only a suggested structure; users can change the names of most
 files and directories.) Files required by workflowr are depicted in red.
-B) All results are organized into a website which is stored in
-\texttt{docs/}). The use of hyperlinks allows for efficient access to
-the results. The screenshots above illustrate how a workflowr website
-can be navigated. Clicking a hyperlink in the main page (1) navigates
-the browser to a webpage containing some results; clicking on the "Home"
-hyperlink (2) in the navigation bar brings the browser back to the main
-page. For larger projects, the navigation bar can be used to quickly
-access different sections of a project.
+B) All results are organized into a website (stored in \texttt{docs/}.
+The use of hyperlinks allows for efficient access to the results. The
+screenshots above illustrate how a workflowr website can be navigated.
+Clicking a hyperlink in the main page (1) navigates the browser to a
+webpage containing some results; clicking on the "Home" hyperlink (2) in
+the navigation bar brings the browser back to the main page. For larger
+projects, the navigation bar can be used to quickly access different
+sections of a project.
 
 }
 
@@ -301,10 +307,10 @@ and configurable; only two of the directories, \verb|analysis/| and
 
 In addition to creating a default file structure for a data analysis
 project, \texttt{wflow\_start()} also initializes the project development history:
-it creates a git repository, then commiting the files and directories to
-this repository. This is all done behind the scenes; no familiarity with
-Git commands is needed to create the Git repository. We give more
-details about the Git repository in the “Implementation” section below.
+it creates a Git repository, and commits the files and directories to
+this repository. This is all done behind the scenes so no familiarity
+with Git is needed. We give more details about the Git repository in the
+“Implementation” section below.
 
 In some cases, a user will have an existing project (with files that may
 or may not be tracked by Git), and would like to incorporate workflowr
@@ -324,16 +330,16 @@ directory is a very common source of errors in data analyses.
 
 In a workflowr project, analyses are performed using the R Markdown
 literate programming system \cite{Xie2018}. The user develops their R
-code inside R Markdown (Rmd) files in the analysis/ directory, then
-calls \texttt{wflow\_build()}, which runs the code and renders the results as an
-HTML file in the docs/ directory. The \texttt{wflow\_build()} function extends the
-\texttt{render()} command from the rmarkdown package with several reproducibility
+code inside Rmd files in the analysis/ directory, then calls
+\texttt{wflow\_build()}, which runs the code and renders the results as HTML files
+in the docs/ directory. The \texttt{wflow\_build()} function extends the \texttt{render()}
+command from the rmarkdown package with several reproducibility
 safeguards:
 
-1. First, it creates a clean R session for executing the code. This is
-critical for reproducibility—results should not depend on the current
-state of the user's R environment, and all objects necessary to run the
-code should be defined in the code or loaded by packages.
+1. It creates a clean R session for executing the code. This is critical
+for reproducibility—results should not depend on the current state of
+the user's R environment, and all objects necessary to run the code
+should be defined in the code or loaded by packages.
 
 2. It automatically sets the working directory in a consistent manner
 (the exact setting is controlled by a configuration file; see
@@ -402,8 +408,9 @@ to the results file generated by that analysis file.
 \item \textit{An analysis file is only published and committed if it
 runs successfully}; on failure, \texttt{wflow\_publish()} aborts, and neither code
 nor results are committed to the Git repository. (R code that does not
-work can still be committed to a workflowr project, but it will not be
-associated with a committed results file.)
+work can still be committed to a workflowr project via other methods,
+e.g. directly using Git, but it will not be associated with a committed
+results file.)
 
 \end{enumerate}
 
@@ -429,10 +436,12 @@ second step builds the results HTML file from the Rmd file. These two
 steps ensure that the results were generated from the committed version
 of the Rmd file. Furthermore, the unique version of the Git repository
 is inserted directly into the HTML file so that the source code used to
-generate the results is easily identified and accessed. (3) The results
-HTML file, as well as any related figure files, are committed to the Git
-repository. Thus, the versioning of Rmd analysis files and corresponding
-HTML results files are coordinated whenever \texttt{wflow\_publish()} is used.
+generate the results is easily identified and accessed. If the code
+generates an error, the entire process is aborted and the previous
+commit made in the first step is undone (3) The results HTML file, as
+well as any related figure files, are committed to the Git repository.
+Thus, the versioning of Rmd analysis files and corresponding HTML
+results files are coordinated whenever \texttt{wflow\_publish()} is used.
 
 }
 
@@ -535,44 +544,43 @@ uploaded using \texttt{wflow\_git\_push()}. (There is also a companion function
 a workflowr project, or when project is being updated from multiple
 computers.)
 
-The workflowr website results files include links to past versions of
-analysis and figures, making it easy for collaborators to benefit from
-the versioning of analyses without knowing anything about Git. For
-example, if a collaborator would like to download a previous version of
-a figure generated several months ago, this can be done by navigating
-the links on the workflowr website.
+The results files in a workflowr website include links to past versions
+of analysis and figures, making it easy for collaborators to benefit
+from the versioning of analyses without knowing anything about Git. For
+example, if a collaborator wants to download a previous version of a
+figure generated several months ago, this can be done by navigating the
+links on the workflowr website.
 
 \subsubsection*{Installation}
 
-The workflowr software is available on CRAN. It works with R versions
+The workflowr package is available on CRAN. It works with R versions
 2.3.5 or later, and can be installed on any major platform that is
 supported by R (Linux, macOS, Windows). It is regularly tested on all
 major operating systems via several Continuous Integration services
 (AppVeyor, CircleCI, Travis CI). It is also regularly tested by CRAN
-using machines running Debian GNU/Linux, Fedora, macOS, Solaris and
+using machines running Debian GNU/Linux, Fedora, macOS, Solaris, and
 Windows.
 
 Because workflowr uses the rmarkdown package to build the HTML pages, it
 requires the document conversion software pandoc to be installed. The
 easiest way for R users to install pandoc is to install RStudio.
 Installing Git is not required because the R package dependency git2r
-includes libgit2, a minimal Git implementation. Git may be useful for
-occasional management of the Git repository outside regular workflowr
-usage.
+includes libgit2, a minimal Git implementation. (Nonetheless, installing
+Git may be useful for occasional management of the Git repository
+outside regular workflowr usage.)
 
 \subsubsection*{Customization}
 
 Workflowr projects are highly customizable. For example, the look of the
-webpages can be customized via options provided by the rmarkdown
-package. These options can be customized in the
-\verb|analysis/_site.yml| configuration file. Additional settings
-specific to workflowr, such as setting the seed for the pseudorandom
-number generator, or setting the working directory for the Rmd files,
-can be controlled in the \verb|_workflowr.yml| file.
+webpages can be customized, via options provided by the rmarkdown
+package, by editing the \verb|analysis/_site.yml| configuration file.
+Additional settings specific to workflowr, such as setting the seed for
+the pseudorandom number generator, or setting the working directory for
+the Rmd files, can be controlled in the \verb|_workflowr.yml| file.
 
 \subsection*{Implementation}
 
-Here we give an overview of the workflowr package implementation. All workflowr commands can be invoked from R (or RStudio) so long as the working directory in R is set to the directory containing a workflowr project, or any subdirectory of a workflowr project (this is similar to how Git commands are invoked). To determine the workflowr project from a subdirectory, whenever a command is called from the R console, workflowr searches for the RStudio project file stored at the root of the project. This search is implemented using the rprojroot R package. (The RStudio project file is a required file, so if this file is deleted, the workflowr commands will not work.)
+Here we give an overview of the workflowr package implementation. All workflowr commands can be invoked from R (or RStudio) so long as the working directory in R is set to the directory containing a workflowr project, or any subdirectory of a workflowr project (this is similar to how Git commands are invoked). To determine the root directory of a workflowr project from a subdirectory, whenever a command is called from the R console, workflowr uses the rprojroot R package to search for the RStudio project file stored at the root of the project. (The RStudio project file is a required file, so if this file is deleted, the workflowr commands will not work.)
 
 \subsubsection*{Organizing the project: \texttt{wflow\_start()}}
 
@@ -580,10 +588,10 @@ The function \texttt{wflow\_start()} populates the project directory using
 predefined template files (see Figure \ref{fig:organized}). It uses the glue R package to
 insert relevant variables, e.g., the name of the project, directly into
 the newly created files. When \texttt{wflow\_start()} is called with git = TRUE
-(the default), a Git repository will be created in the project
-directory, and all newly created or modified files will be committed to
-the git repository. If the user has not created a Git repository on
-their computer, they may need to first call \texttt{wflow\_git\_config()} to
+(which is the default), a Git repository is created in the project
+directory, and all newly created or modified files are committed to the
+repository. If the user has never previously created a Git repository on
+their computer they may need to first call \texttt{wflow\_git\_config()} to
 configure Git.
 
 \subsubsection*{Generating results reproducibly: \texttt{wflow\_build()}}
@@ -603,12 +611,12 @@ labels and URLs included in the navigation bar, can be adjusted in the
 \verb|analysis/_site.yml| configuration file. (These options can also be
 set individually inside the Rmd files, which will override the default
 options set in \texttt{analysis/\_site.yml}. ) Like other R packages
-such as bookdown that extend rmarkdown, workflowr provides a custom site
+that extend rmarkdown (e.g. bookdown), workflowr provides a custom site
 generator in the function \texttt{wflow\_site()} which alters the website
 generation process. For example, one change to this process is that the
 generated website files (the HTML, CSS, JavaScript and figures) are
 moved instead of copied from \verb|analysis/| to \verb|docs/|. This
-reduces unnecessary duplication of files. Most of the workflowr’s key
+reduces unnecessary duplication of files. Most of workflowr’s key
 features, including the reproducibility report, are implemented in
 \texttt{wflow\_html()}, which we describe next.
 
@@ -622,19 +630,19 @@ the section headings) are inherited by \texttt{wflow\_html()}.
 Most of the workflowr content is added as a preprocessing step prior to
 executing the R code in the Rmd file. To achieve this, \texttt{wflow\_html()}
 copies the original Rmd file to a temporary directory, incorporates the
-additional content, then executes the R code. The content embedded into
-the Rmd file includes includes a code chunk that calls \texttt{set.seed()}, a
-code chunk toward the end of the file that calls \texttt{sessionInfo()}, and
-inline HTML tags for elements such as the reproducibility report and
-links to previous versions of figures. There is also a brief
-postprocessing step to incorporate additional HTML, CSS and JavaScript
-elements needed to display the workflowr elements added in the
-preprocessing step. This postprocessing is done when pandoc converts the
-generated markdown to the final webpage.
+additional content, then executes the code. The content embedded into
+the Rmd file includes a code chunk that calls \texttt{set.seed()}, a code chunk
+toward the end of the file that calls \texttt{sessionInfo()}, and inline HTML
+tags for elements such as the reproducibility report and links to
+previous versions of figures. There is also a brief postprocessing step
+to incorporate additional HTML, CSS and JavaScript elements needed to
+display the workflowr elements added in the preprocessing step. This
+postprocessing is done when pandoc converts the generated markdown to
+the final webpage.
 
 The process for embedding links to past versions of files --- that is,
 files added to previous commits in a Git repository --- requires some
-additional explanation. Links to past versions are only included if the
+additional explanation. Links to past versions are included only if the
 user has set up a remote repository hosted by either GitHub and GitLab.
 Clicking on a link to a past version of an Rmd file (or figure file) in
 a Web browser will load a webpage displaying the R Markdown source code
@@ -642,7 +650,7 @@ a Web browser will load a webpage displaying the R Markdown source code
 of the webpages, we use an independent service raw.githack.com, which
 displays the HTML file in the browser like any other webpage (this is
 because GitHub and GitLab only show the raw HTML code). These links will
-only point to valid webpages once the remote repository (on GitHub or
+point to valid webpages only after the remote repository (on GitHub or
 GitLab) is updated, e.g., using \texttt{wflow\_git\_push()}. In the current
 implementation, when an Rmd file (and its corresponding HTML file) is
 renamed, the webpage does not include links to past versions prior to
@@ -690,9 +698,8 @@ handling to make sure that the Git repository and R environment are in
 an acceptable state for committing the results. When an issue arises,
 \texttt{wflow\_publish()} attempts to detect the issue as early as possible, then
 it reverts the Git repository to the initial state and, when possible,
-provides advice advice to the user on how to fix the issue. For example,
-\texttt{wflow\_publish()} will stop if any of the files contain conflicts from a
-previous merge using Git.
+suggests how to fix the issue. For example, \texttt{wflow\_publish()} will stop if
+any of the files contain conflicts from a previous merge using Git.
 
 \subsubsection*{Checking in on the project's development: \texttt{wflow\_status()}}
 
@@ -728,22 +735,6 @@ additional step of activating the GitLab Pages by creating a file
 .gitlab-ci.yml with the proper configuration. (GitHub Pages must be set
 up manually; there is currently no way to automate this via the GitHub
 API.)
-
-\subsubsection*{Installation of workflowr and software dependencies}
-
-Distribution and installation of the workflowr package is managed by the
-Comprehensive R Archive Network (CRAN). Running
-install.packages(“workflowr”) will install the latest version of the
-workflowr package from CRAN, usually from pre-compiled binaries, and
-will automatically install any other dependencies that are not already
-installed in R. The one software requirement that is not automatically
-installed on most systems is pandoc. Fortunately, pandoc comes bundled
-with RStudio, so users do not need to install pandoc separately as long
-as they install workflowr from RStudio. Alternatively, if R is used
-instead of RStudio, pandoc is available for download via popular package
-managers such as Homebrew and Anaconda. Users do not need to install
-Git; workflowr uses the cross-platform C library libgit2, which is
-interfaced to R via the R package git2r.
 
 
 \section*{Use cases}
@@ -830,15 +821,17 @@ instructions, and exercises.
 \section*{Summary}
 
 Our main aim in developing workflowr is to lower barriers to open and
-reproducible code. The R package is straightforward to install, easy to
-learn, and highly customizable.
+reproducible code. Workflowr provides a core set of commands that can be
+easily integrated into research practice, and combined with other tools,
+to make projects more accessible and reproducible. The R package is
+straightforward to install, easy to learn, and highly customizable.
 
 Since the first official release of workflowr (version 1.0.1, released
 in April 2018), the core functionality has remained intact, and we
 expect it to remain that way. The core features of workflowr have been
 carefully tested and revised, in large part thanks to feedback and issue
 reports from the user community. Our next aim is to implement several
-major enhancements to workflowr, including:
+enhancements, including:
 
 \begin{itemize}
 
@@ -886,12 +879,8 @@ advances --- there are many widely used tools for managing and deploying
 computational environments, from container technologies such as Docker
 to package managers such as Anaconda and packrat. We view these tools as
 being complementary to workflowr, and one future direction would be to
-develop easy-to-use functions that configure their tools for use in a
+develop easy-to-use functions that configure such tools for use in a
 workflowr project.
-
-In combination with other reproducibility tools, we hope that
-researchers are able to use workflowr to further promote transparency
-and reproducibility in scientific research.
 
 
 \section*{Data availability}
@@ -962,7 +951,7 @@ implementation are
 \href{https://github.com/yihui/knitr}{knitr} and
 \href{http://rmarkdown.rstudio.com/}{rmarkdown}.
 
-{\small\bibliographystyle{unsrtnat}
+{\small\bibliographystyle{abbrvnat}
 
 \bibliography{references}}
 
