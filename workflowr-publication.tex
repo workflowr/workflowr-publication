@@ -96,27 +96,28 @@ Gentleman2007, Peng2011, Ince2012, Morin2012, Sandve2013,
 Easterbrook2014, Stodden2016, Lowndes2017}. Unfortunately, this ideal is
 not usually achieved in practice; most scientific articles do not come
 with code that can reproduce their results \cite{Ioannidis2009,
-Ioannidis2014, Stodden2018}.
+Merali2010, Ioannidis2014, Stodden2018}.
 
 There are many barriers to sharing reproducible code and corresponding
-computational results. One barrier is simply that keeping code and
-results sufficiently organized and documented is difficult --- it is
-burdensome even for experienced programmers who are well-trained in
-relevant computational tools such as version control (discussed later),
-and even harder for the many domain scientists who write code with
-little formal training in computing and informatics \cite{Wilson2014}.
-Further, modern interactive computer environments (e.g., R, python),
-while greatly enhancing code development \cite{Findler2002}, also make
-it easier to create results that are irreducible. To take one example,
-it is all too easy to run interactive code without recording or
-controlling the seed of a pseudo-random number generator, or generate
-results in a ``contaminated'' environment that contains objects whose
-values are critical but unrecorded. Both these issues can lead to
-results that are difficult or impossible to reproduce. Finally, even
-when analysts produce code that is reproducible in principle, sharing it
-in a way that makes it easy for others to retrieve and use (e.g., via
-GitHub or Bitbucket) involves technologies that many scientists are not
-familiar with \cite{Marwick2017, Stodden2018}.
+computational results \cite{kitzes2017}. One barrier is simply that
+keeping code and results sufficiently organized and documented is
+difficult --- it is burdensome even for experienced programmers who are
+well-trained in relevant computational tools such as version control
+(discussed later), and even harder for the many domain scientists who
+write code with little formal training in computing and informatics
+\cite{Wilson2014}. Further, modern interactive computer environments
+(e.g., R, python), while greatly enhancing code development
+\cite{Findler2002}, also make it easier to create results that are
+irreducible. To take one example, it is all too easy to run interactive
+code without recording or controlling the seed of a pseudo-random number
+generator, or generate results in a ``contaminated'' environment that
+contains objects whose values are critical but unrecorded. Both these
+issues can lead to results that are difficult or impossible to
+reproduce. Finally, even when analysts produce code that is reproducible
+in principle, sharing it in a way that makes it easy for others to
+retrieve and use (e.g., via GitHub or Bitbucket) involves technologies
+that many scientists are not familiar with \cite{Marwick2017,
+Stodden2018}.
 
 In light of this, there is a pressing need for easy-to-use tools to help
 analysts maintain reproducible code, document progress, and disseminate
