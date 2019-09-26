@@ -209,24 +209,21 @@ development history via \textbf{Git} with literate programming.
 The \textbf{workflowr} R package is available from CRAN
 (https://cran.r-project.org/package=workflowr) and GitHub
 (https://github.com/jdblischak/workflowr), and is distributed under the
-flexible open source MIT license. Extensive documentation, tutorials and
-user support can be found at the GitHub site. In the remainder of this
-article, we describe the \textbf{workflowr} interface, explain its design, and
-give examples illustrating how \textbf{workflowr} is used in practice.
+flexible open source MIT license. The R package and its dependencies are
+straightforward to install while being highly customizable for more
+dedicated users. Extensive documentation, tutorials and user support can
+be found at the GitHub site. In the remainder of this article, we
+describe the \textbf{workflowr} interface, explain its design, and give examples
+illustrating how \textbf{workflowr} is used in practice.
 
 
-\section*{Methods}
+\section*{Operation}
 
-The \textbf{workflowr} R package makes data analysis projects more organized,
-tracked, reproducible, and shareable. The R package and its dependencies
-are straightforward to install while being highly customizable for more
-dedicated users. In the following sections, we give an overview of
-workflowr's features, and describe their implementation. For
-step-by-step instructions on starting a \textbf{workflowr} project, see the
+In this section, we give an overview of \textbf{workflowr}'s main features from a
+user's perspective. For step-by-step instructions on starting a
+workflowr project, see the
 \href{https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html}{"Getting
 started with \textbf{workflowr}"} vignette.
-
-\subsection*{Operation}
 
 For basic usage, only five functions are needed (summarized here, and
 described in more detail later):
@@ -260,7 +257,7 @@ performed, and to provide easy access to relevant external data (e.g.,
 related work or helpful background information); see Figure \ref{fig:organized}B and Use
 Cases below).
 
-\subsubsection*{Organizing the project: \texttt{wflow\_start()}}
+\subsection*{Organizing the project: \texttt{wflow\_start()}}
 
 
 
@@ -326,7 +323,7 @@ project directory. Although this is a simple step, it is important for
 correctly resolving file paths. Forgetting to change the working
 directory is a very common source of errors in data analyses.
 
-\subsubsection*{Generating results reproducibly: \texttt{wflow\_build()}}
+\subsection*{Generating results reproducibly: \texttt{wflow\_build()}}
 
 In a \textbf{workflowr} project, analyses are performed using the R Markdown
 literate programming system \cite{Xie2018}. The user develops their R
@@ -362,7 +359,7 @@ reproducibility issues, such as changes that were not committed to the
 project development history, and the use of (non-reproducible) absolute
 file paths (Figure \ref{fig:reproducible}).
 
-\subsubsection*{Keeping track of the project's development: \texttt{wflow\_publish()}}
+\subsection*{Keeping track of the project's development: \texttt{wflow\_publish()}}
 
 As a project progresses, many versions of the results will be generated
 as results are scrutinized, analyses are revised, errors are corrected,
@@ -454,7 +451,7 @@ a new version of the code and results, a link to previously published
 versions of the analysis are embedded in the webpage so that readers can
 easily access previous versions and compare with the latest results.
 
-\subsubsection*{Checking in on the project's development: \texttt{wflow\_status()}}
+\subsection*{Checking in on the project's development: \texttt{wflow\_status()}}
 
 As a \textbf{workflowr} project grows, it is important to be able to get an
 overview of the project's status and identify files that may need
@@ -524,7 +521,7 @@ check.
 
 \end{figure}
 
-\subsubsection*{Sharing code and results: \texttt{wflow\_git\_push()}}
+\subsection*{Sharing code and results: \texttt{wflow\_git\_push()}}
 
 The version-controlled website created by \textbf{workflowr} is self-contained,
 so it can be hosted by most Web servers with little effort. Once the
@@ -551,7 +548,7 @@ example, if a collaborator wants to download a previous version of a
 figure generated several months ago, this can be done by navigating the
 links on the \textbf{workflowr} website.
 
-\subsubsection*{Installation}
+\subsection*{Installation}
 
 The \textbf{workflowr} package is available on CRAN. It works with R versions
 2.3.5 or later, and can be installed on any major platform that is
@@ -569,7 +566,7 @@ includes \textbf{libgit2}, a minimal \textbf{Git} implementation. (Nonetheless, 
 Git may be useful for occasional management of the \textbf{Git} repository
 outside regular \textbf{workflowr} usage.)
 
-\subsubsection*{Customization}
+\subsection*{Customization}
 
 Workflowr projects are highly customizable. For example, the look of the
 webpages can be customized, via options provided by the \textbf{rmarkdown}
@@ -578,11 +575,11 @@ Additional settings specific to \textbf{workflowr}, such as setting the seed for
 the pseudorandom number generator, or setting the working directory for
 the Rmd files, can be controlled in the \verb|_workflowr.yml| file.
 
-\subsection*{Implementation}
+\section*{Implementation}
 
 Here we give an overview of the \textbf{workflowr} package implementation. All \textbf{workflowr} commands can be invoked from R (or \textbf{RStudio}) so long as the working directory in R is set to the directory containing a \textbf{workflowr} project, or any subdirectory of a \textbf{workflowr} project (this is similar to how \textbf{Git} commands are invoked). To determine the root directory of a \textbf{workflowr} project from a subdirectory, whenever a command is called from the R console, \textbf{workflowr} uses the rprojroot R package to search for the \textbf{RStudio} project file stored at the root of the project. (The \textbf{RStudio} project file is a required file, so if this file is deleted, the \textbf{workflowr} commands will not work.)
 
-\subsubsection*{Organizing the project: \texttt{wflow\_start()}}
+\subsection*{Organizing the project: \texttt{wflow\_start()}}
 
 The function \texttt{wflow\_start()} populates the project directory using
 predefined template files (see Figure \ref{fig:organized}). It uses the glue R package to
@@ -594,7 +591,7 @@ repository. If the user has never previously created a \textbf{Git} repository o
 their computer they may need to first call \texttt{wflow\_git\_config()} to
 configure \textbf{Git}.
 
-\subsubsection*{Generating results reproducibly: \texttt{wflow\_build()}}
+\subsection*{Generating results reproducibly: \texttt{wflow\_build()}}
 
 The \texttt{wflow\_build()} function generates a responsive website from a
 collection of Rmd files. Both \texttt{wflow\_build()} and \texttt{wflow\_publish()} support
@@ -688,7 +685,7 @@ possible to have a different \texttt{knit\_root\_dir} setting for
 different files, but this is generally not recommended as it will make
 the code more difficult to follow.
 
-\subsubsection*{Keeping track of the project's development: \texttt{wflow\_publish()}}
+\subsection*{Keeping track of the project's development: \texttt{wflow\_publish()}}
 
 One of the steps in \texttt{wflow\_publish()}, as we have mentioned, is a call to
 \texttt{wflow\_build()}. It also runs \textbf{Git} commands to commit the source code and
@@ -701,7 +698,7 @@ it reverts the \textbf{Git} repository to the initial state and, when possible,
 suggests how to fix the issue. For example, \texttt{wflow\_publish()} will stop if
 any of the files contain conflicts from a previous merge using \textbf{Git}.
 
-\subsubsection*{Checking in on the project's development: \texttt{wflow\_status()}}
+\subsection*{Checking in on the project's development: \texttt{wflow\_status()}}
 
 The \texttt{wflow\_status()} function checks the status of each Rmd file in the
 project by comparing the state of the file in the \textbf{Git} repository's
@@ -721,7 +718,7 @@ committed to the \textbf{Git} history, an Rmd file is considered “modified” 
 has modifying commits that are more recent than commits modifying the
 corresponding HTML file.
 
-\subsubsection*{Sharing the code and results: \texttt{wflow\_git\_push()}}
+\subsection*{Sharing the code and results: \texttt{wflow\_git\_push()}}
 
 To use \texttt{wflow\_git\_push()}, the remote \textbf{Git} repository must first be
 configured. The user can configure the remotes manually using the git
