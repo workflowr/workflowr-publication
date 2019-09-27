@@ -131,7 +131,11 @@ software <- c(
 
 for (s in software) {
  lines_out <- str_replace_all(lines_out,
-                              sprintf(" (%s)\\b", s),
+                              sprintf("[:space:](%s)\\b", s),
+                              " \\\\textbf\\{\\1}")
+ # Handle the edge case where the package is the start of a new line
+ lines_out <- str_replace_all(lines_out,
+                              sprintf("^(%s)\\b", s),
                               " \\\\textbf\\{\\1}")
 }
 
