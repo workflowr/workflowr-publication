@@ -94,6 +94,8 @@ lines_out <- str_replace_all(lines_out, "FIGURE 4", "Figure \\\\ref\\{fig:reprod
 software <- c(
   "adapr",
   "archivist",
+  "blogdown",
+  "bookdown",
   "cacher",
   "callr",
   "checkpoint",
@@ -111,6 +113,8 @@ software <- c(
   "libgit2",
   "msigdbr",
   "packrat",
+  "pandoc",
+  "pkgdown",
   "ProjectTemplate",
   "rmarkdown",
   "rprojroot",
@@ -137,6 +141,10 @@ for (s in software) {
  lines_out <- str_replace_all(lines_out,
                               sprintf("^(%s)\\b", s),
                               " \\\\textbf\\{\\1}")
+ # Handle the edge case where software is in parentheses
+ lines_out <- str_replace_all(lines_out,
+                              sprintf("\\((%s)\\b", s),
+                              " \\(\\\\textbf\\{\\1}")
 }
 
 writeLines(lines_out, con = fname)

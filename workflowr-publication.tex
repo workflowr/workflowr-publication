@@ -53,7 +53,7 @@ with tools that are not a regular part of every scientist's toolbox. We
 have developed an R package, \textbf{workflowr}, to help all scientists,
 regardless of background, overcome these challenges, and make their
 scientific analyses more organized, reproducible, well-documented, and
-shareable. \textbf{Workflowr} aims to instill a particular "workflow" --- a
+shareable. \textbf{Workflowr} aims to instill a particular ``workflow'' --- a
 sequence of steps to be repeated and integrated into research practice
 --- that helps make projects more reproducible and accessible.This
 workflow integrates four key elements: (1) version control (via \textbf{Git});
@@ -62,8 +62,8 @@ safeguards that improve code reproducibility; and (4) sharing code and
 results via a browsable website. These features exploit powerful
 existing tools, whose mastery would take considerable study. However,
 the \textbf{workflowr} interface is simple enough that novice users can quickly
-enjoy its many benefits. By simply following the "workflowr workflow", R
-users can create projects whose results, figures, and development
+enjoy its many benefits. By simply following the ``workflowr workflow'',
+R users can create projects whose results, figures, and development
 history are easily accessible on a static website --- thereby
 conveniently shareable with collaborators by sending them a URL --- and
 accompanied by source code and reproducibility safeguards. The \textbf{workflowr}
@@ -124,7 +124,7 @@ analysts maintain reproducible code, document progress, and disseminate
 code and results to collaborators and to the scientific community. We
 have developed an open source R \cite{R2019} package, \textbf{workflowr}, to
 address this need. The \textbf{workflowr} package aims to instill a particular
-"workflow" --- a sequence of steps to be repeated and integrated into
+``workflow'' --- a sequence of steps to be repeated and integrated into
 research practice --- that helps make projects more reproducible and
 accessible. To achieve this, \textbf{workflowr} integrates four key features that
 facilitate reproducible code development: (1) version control
@@ -135,7 +135,7 @@ website. These features exploit powerful existing tools, whose mastery
 would take considerable study. However, the \textbf{workflowr} interface is
 designed to be simple so that learning it does not become another
 barrier in itself and novice users can quickly enjoy its many benefits.
-By simply following the \textbf{workflowr} "workflow", R users can create
+By simply following the \textbf{workflowr} ``workflow'', R users can create
 projects whose results and figures are easily accessible on a static
 website --- thereby conveniently shareable with collaborators by sending
 them a URL --- and accompanied by source code and reproducibility
@@ -150,25 +150,26 @@ The \textbf{workflowr} package builds on several software technologies and R
 packages, without which this work would have been impossible. \textbf{Workflowr}
 builds on the invaluable R Markdown literate programming system
 implemented in \textbf{knitr} \cite{Xie2014, knitrpkg} and \textbf{rmarkdown}
-\cite{Xie2018, rmarkdownpkg}, which in turn build on pandoc, the
-"Markdown" markup language, and various Web technologies such as
+\cite{Xie2018, rmarkdownpkg}, which in turn build on \textbf{pandoc}, the
+``Markdown'' markup language, and various Web technologies such as
 Cascading Style Sheets and Bootstrap \cite{Spurlock2013}. Several
 popular R packages extend \textbf{knitr} and \textbf{rmarkdown} for specific aims such as
-writing blogs (blogdown), monographs (bookdown), and software
-documentation (pkgdown). Analogously, \textbf{workflowr} extends \textbf{rmarkdown} with
-additional features such as the reproducibility safeguards, and adds
-integration with the version control system \textbf{Git} \cite{Loeliger2012,
-Chacon2014}. \textbf{Git} was designed to support large-scale, distributed
-software development, but in \textbf{workflowr} it serves a different purpose: to
-record, and provide access to, the development history of a project.
- \textbf{Workflowr} also uses another feature of \textbf{Git}, "remotes", to enable
-collaborative project development across multiple locations, and to help
-users create browsable projects via integrations with popular online
-services such as GitHub Pages and GitLab Pages. These features are
-implemented using the R package \textbf{git2r} \cite{git2r}, which provides an
-interface to the \textbf{libgit2} C library. Finally, beyond extending the R
-programming language, \textbf{workflowr} is also integrated with the popular
- \textbf{RStudio} interactive development environment \cite{rstudio}.
+writing blogs  (\textbf{blogdown} \cite{blogdown}), monographs  (\textbf{bookdown}
+\cite{bookdown}), and software documentation  (\textbf{pkgdown} \cite{pkgdown}).
+Analogously, \textbf{workflowr} extends \textbf{rmarkdown} with additional features such
+as the reproducibility safeguards, and adds integration with the version
+control system \textbf{Git} \cite{Loeliger2012, Chacon2014}. \textbf{Git} was designed to
+support large-scale, distributed software development, but in \textbf{workflowr}
+it serves a different purpose: to record, and provide access to, the
+development history of a project. \textbf{Workflowr} also uses another feature of
+ \textbf{Git}, ``remotes'', to enable collaborative project development across
+multiple locations, and to help users create browsable projects via
+integrations with popular online services such as GitHub Pages and
+GitLab Pages. These features are implemented using the R package \textbf{git2r}
+\cite{git2r}, which provides an interface to the \textbf{libgit2} C library.
+Finally, beyond extending the R programming language, \textbf{workflowr} is also
+integrated with the popular \textbf{RStudio} interactive development environment
+\cite{rstudio}.
 
 In addition to the tools upon which \textbf{workflowr} directly builds, there are
 many other related tools that directly or indirectly advance open and
@@ -194,9 +195,9 @@ these platforms, possibly to enhance their existing features. Other R
 packages with utilities to facilitate reproducibility that could
 complement \textbf{workflowr} include \textbf{ProjectTemplate} \cite{projecttemplate},
  \textbf{rrtools} \cite{rrtools}, and \textbf{usethis} \cite{usethis}, as well as many of
-the R packages listed in the "Reproducible Research" CRAN Task View
+the R packages listed in the ``Reproducible Research'' CRAN Task View
 (https://CRAN.R-project.org/view=ReproducibleResearch) and our own
-(unofficial) Task View on "Project Workflows"
+(unofficial) Task View on ``Project Workflows''
 (https://github.com/jdblischak/ctv-project-workflows).
 
 Of the available software tools facilitating reproducible research,
@@ -227,8 +228,8 @@ illustrating how \textbf{workflowr} is used in practice.
 In this section, we give an overview of \textbf{workflowr}'s main features from a
 user's perspective. For step-by-step instructions on starting a
  \textbf{workflowr} project, see the
-\href{https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html}{"Getting
-started with \textbf{workflowr}"} vignette.
+\href{https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html}{``Getting
+started with \textbf{workflowr}''} vignette.
 
 For basic usage, only five functions are needed (summarized here, and
 described in more detail later):
@@ -242,8 +243,8 @@ directory structure (Figure \ref{fig:organized}A);
 files, with reproducibility safeguards in place;
 
 \item \texttt{wflow\_publish()} renders the webpages and updates the project
-development history—it calls \texttt{wflow\_build()}, commits the webpages, and
-commits the code used to create the webpages;
+development history—it commits the code, calls \texttt{wflow\_build()}, then
+commits the webpages;
 
 \item \texttt{wflow\_status()} reports the status of the project files; and
 
@@ -256,7 +257,7 @@ repository to a website hosting service.
 browsing the results generated by the Rmd analysis files} (Figure \ref{fig:organized}B).
 The use of websites to organize information is, of course, now
 widespread. Nonetheless, we believe they are under-utilized for
-organizing the results of scientific projects. In particular hypertext
+organizing the results of scientific projects. In particular, hypertext
 provides an ideal way to connect different analyses that have been
 performed, and to provide easy access to relevant external data (e.g.,
 related work or helpful background information); see Figure \ref{fig:organized}B and Use
@@ -286,10 +287,10 @@ B) All results are organized into a website (stored in \texttt{docs/}.
 The use of hyperlinks allows for efficient access to the results. The
 screenshots above illustrate how a \textbf{workflowr} website can be navigated.
 Clicking a hyperlink in the main page (1) navigates the browser to a
-webpage containing some results; clicking on the "Home" hyperlink (2) in
-the navigation bar brings the browser back to the main page. For larger
-projects, the navigation bar can be used to quickly access different
-sections of a project.
+webpage containing some results; clicking on the ``Home'' hyperlink (2)
+in the navigation bar brings the browser back to the main page. For
+larger projects, the navigation bar can be used to quickly access
+different sections of a project.
 
 }
 
@@ -312,14 +313,14 @@ project, \texttt{wflow\_start()} also initializes the project development histor
 it creates a \textbf{Git} repository, and commits the files and directories to
 this repository. This is all done behind the scenes so no familiarity
 with \textbf{Git} is needed. We give more details about the \textbf{Git} repository in the
-“Implementation” section below.
+``Implementation'' section below.
 
 In some cases, a user will have an existing project (with files that may
 or may not be tracked by \textbf{Git}), and would like to incorporate \textbf{workflowr}
 into the project --- \texttt{wflow\_start()} also easily accommodates this
 scenario, with additional arguments to control how the \textbf{workflowr} files
-are added to the existing project. See the package vignette, “Migrating
-an existing project to use \textbf{workflowr},” for more details; it can be
+are added to the existing project. See the package vignette, ``Migrating
+an existing project to use \textbf{workflowr},'' for more details; it can be
 accessed by running vignette("wflow-03-migrating") after loading the
  \textbf{workflowr} package in R.
 
@@ -345,7 +346,7 @@ should be defined in the code or loaded by packages.
 
 2. It automatically sets the working directory in a consistent manner
 (the exact setting is controlled by a configuration file; see
-"Implementation" below). This prevents one of the most common failures
+``Implementation'' below). This prevents one of the most common failures
 to reproduce in R—not setting the working directory before running the R
 script, resulting in incorrectly resolved relative file paths.
 
@@ -359,7 +360,7 @@ to produce the results.
 
 Finally, \texttt{wflow\_build()} summarizes the results of these reproducibility
 safeguards in a report at the top of the webpage, along with additional
-“reproducibility checks” which alert the user to potential
+``reproducibility checks'' which alert the user to potential
 reproducibility issues, such as changes that were not committed to the
 project development history, and the use of (non-reproducible) absolute
 file paths (Figure \ref{fig:reproducible}).
@@ -440,7 +441,7 @@ of the Rmd file. Furthermore, the unique version of the \textbf{Git} repository
 is inserted directly into the HTML file so that the source code used to
 generate the results is easily identified and accessed. If the code
 generates an error, the entire process is aborted and the previous
-commit made in the first step is undone (3) The results HTML file, as
+commit made in the first step is undone. (3) The results HTML file, as
 well as any related figure files, are committed to the \textbf{Git} repository.
 Thus, the versioning of Rmd analysis files and corresponding HTML
 results files are coordinated whenever \texttt{wflow\_publish()} is used.
@@ -564,8 +565,8 @@ using machines running Debian GNU/Linux, Fedora, macOS, Solaris, and
 Windows.
 
 Because \textbf{workflowr} uses the \textbf{rmarkdown} package to build the HTML pages, it
-requires the document conversion software pandoc to be installed. The
-easiest way for R users to install pandoc is to install \textbf{RStudio}.
+requires the document conversion software \textbf{pandoc} to be installed. The
+easiest way for R users to install \textbf{pandoc} is to install \textbf{RStudio}.
 Installing \textbf{Git} is not required because the R package dependency \textbf{git2r}
 includes \textbf{libgit2}, a minimal \textbf{Git} implementation. (Nonetheless, installing
  \textbf{Git} may be useful for occasional management of the \textbf{Git} repository
@@ -614,7 +615,7 @@ labels and URLs included in the navigation bar, can be adjusted in the
 \verb|analysis/_site.yml| configuration file. (These options can also be
 set individually inside the Rmd files, which will override the default
 options set in \texttt{analysis/\_site.yml}. ) Like other R packages
-that extend \textbf{rmarkdown} (e.g. bookdown), \textbf{workflowr} provides a custom site
+that extend \textbf{rmarkdown} (e.g., \textbf{bookdown}), \textbf{workflowr} provides a custom site
 generator in the function \texttt{wflow\_site()} which alters the website
 generation process. For example, one change to this process is that the
 generated website files (the HTML, CSS, JavaScript and figures) are
@@ -640,7 +641,7 @@ tags for elements such as the reproducibility report and links to
 previous versions of figures. There is also a brief postprocessing step
 to incorporate additional HTML, CSS and JavaScript elements needed to
 display the \textbf{workflowr} elements added in the preprocessing step. This
-postprocessing is done when pandoc converts the generated markdown to
+postprocessing is done when \textbf{pandoc} converts the generated markdown to
 the final webpage.
 
 The process for embedding links to past versions of files --- that is,
@@ -670,8 +671,8 @@ that can be customized in this file. For example, the default function
 used to record the session information at the bottom of each webpage,
 \texttt{sessionInfo()}, can be overridden by adding the YAML field
 \verb|sessioninfo| (e.g., the function from the \textbf{devtools} \cite{devtools}
-package could be used instead by setting \texttt{sessioninfo:
- \textbf{devtools}::session\_info()}).
+package could be used instead by setting
+\texttt{sessioninfo:\;devtools::session\_info()}).
 
 To execute the code, \texttt{wflow\_build()} first creates a new R session to
 execute the code. This is implemented using the R package \textbf{callr}
@@ -867,7 +868,7 @@ inside a \textbf{Git} repository. This, however, requires considerable expertise
 to install and configure \textbf{Git LFS}, so it is not a satisfactory solution
 for some \textbf{workflowr} users. Also note that sensitive or secure data can be
 added to a \textbf{workflowr} project so long as the storage and access practices
-meet the data security requirements. (workflowr has options to simplify
+meet the data security requirements.  (\textbf{workflowr} has options to simplify
 creation and management of projects with security requirements.)
 
 Since \textbf{workflowr} builds on \textbf{Git}, users who already have experience with
