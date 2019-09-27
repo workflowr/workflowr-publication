@@ -122,7 +122,7 @@ Stodden2018}.
 In light of this, there is a pressing need for easy-to-use tools to help
 analysts maintain reproducible code, document progress, and disseminate
 code and results to collaborators and to the scientific community. We
-have developed an open source R \cite{R2019} package, "workflowr", to
+have developed an open source R \cite{R2019} package, \textbf{workflowr}, to
 address this need. The \textbf{workflowr} package aims to instill a particular
 "workflow" --- a sequence of steps to be repeated and integrated into
 research practice --- that helps make projects more reproducible and
@@ -135,7 +135,7 @@ website. These features exploit powerful existing tools, whose mastery
 would take considerable study. However, the \textbf{workflowr} interface is
 designed to be simple so that learning it does not become another
 barrier in itself and novice users can quickly enjoy its many benefits.
-By simply following the "workflowr workflow", R users can create
+By simply following the \textbf{workflowr} "workflow", R users can create
 projects whose results and figures are easily accessible on a static
 website --- thereby conveniently shareable with collaborators by sending
 them a URL --- and accompanied by source code and reproducibility
@@ -149,25 +149,26 @@ Web technologies.
 The \textbf{workflowr} package builds on several software technologies and R
 packages, without which this work would have been impossible. \textbf{Workflowr}
 builds on the invaluable R Markdown literate programming system
-implemented in knitr \cite{Xie2014, knitr} and \textbf{rmarkdown} \cite{Xie2018,
-rmarkdown}, which in turn build on pandoc, the "Markdown" markup
-language, and various Web technologies such as Cascading Style Sheets
-and Bootstrap \cite{Spurlock2013}. Several popular R packages extend
-knitr and \textbf{rmarkdown} for specific aims such as writing blogs (blogdown),
-monographs (bookdown), and software documentation (pkgdown).
-Analogously, \textbf{workflowr} extends \textbf{rmarkdown} with additional features such
-as the reproducibility safeguards, and adds integration with the version
-control system \textbf{Git} \cite{Loeliger2012, Chacon2014}. \textbf{Git} was designed to
-support large-scale, distributed software development, but in \textbf{workflowr}
-it serves a different purpose: to record, and provide access to, the
-development history of a project. \textbf{Workflowr} also uses another feature of
-Git, "remotes", to enable collaborative project development across
-multiple locations, and to help users create browsable projects via
-integrations with popular online services such as GitHub Pages and
-GitLab Pages. These features are implemented using the R package \textbf{git2r},
-which provides an interface to the \textbf{libgit2} C library. Finally, beyond
-extending the R programming language, \textbf{workflowr} is also integrated with
-the popular \textbf{RStudio} interactive development environment.
+implemented in \textbf{knitr} \cite{Xie2014, knitrpkg} and \textbf{rmarkdown}
+\cite{Xie2018, rmarkdownpkg}, which in turn build on pandoc, the
+"Markdown" markup language, and various Web technologies such as
+Cascading Style Sheets and Bootstrap \cite{Spurlock2013}. Several
+popular R packages extend \textbf{knitr} and \textbf{rmarkdown} for specific aims such as
+writing blogs (blogdown), monographs (bookdown), and software
+documentation (pkgdown). Analogously, \textbf{workflowr} extends \textbf{rmarkdown} with
+additional features such as the reproducibility safeguards, and adds
+integration with the version control system \textbf{Git} \cite{Loeliger2012,
+Chacon2014}. \textbf{Git} was designed to support large-scale, distributed
+software development, but in \textbf{workflowr} it serves a different purpose: to
+record, and provide access to, the development history of a project.
+Workflowr also uses another feature of \textbf{Git}, "remotes", to enable
+collaborative project development across multiple locations, and to help
+users create browsable projects via integrations with popular online
+services such as GitHub Pages and GitLab Pages. These features are
+implemented using the R package \textbf{git2r} \cite{git2r}, which provides an
+interface to the \textbf{libgit2} C library. Finally, beyond extending the R
+programming language, \textbf{workflowr} is also integrated with the popular
+RStudio interactive development environment \cite{rstudio}.
 
 In addition to the tools upon which \textbf{workflowr} directly builds, there are
 many other related tools that directly or indirectly advance open and
@@ -176,21 +177,24 @@ beyond the scope of this article, but we note that many of these tools
 are complementary to \textbf{workflowr} in that they tackle aspects of
 reproducibility that \textbf{workflowr} currently leaves to the user, such as
 management and deployment of computational environments and dependencies
-(e.g., \textbf{conda}, \textbf{Homebrew}, \textbf{Singularity}, \textbf{Docker}, \textbf{Kubernetes}, \textbf{packrat},
-checkpoint, \textbf{switchr}, \textbf{RSuite}); development and management of
-computational pipelines (e.g., \textbf{GNU Make}, \textbf{Snakemake}, \textbf{drake}); management
-and archival of data objects (e.g., \textbf{archivist}, \textbf{cacher}, Dryad, Zenodo);
-and distribution of open source software (e.g., CRAN, Bioconductor,
-Bioconda). Most of these tools or services could be used in combination
-with \textbf{workflowr}. There are additional, ambitious efforts to develop
-cloud-based services that come with many computational reproducibility
-features (e.g., Code Ocean, Binder, Gigantum, The Whole Tale). Many of
-these platforms manage individual projects as \textbf{Git} repositories, so
-workflowr could, in principle, be installed and used on these platforms,
-possibly to enhance their existing features. Other R packages with
-utilities to facilitate reproducibility that could complement \textbf{workflowr}
-include \textbf{ProjectTemplate}, \textbf{rrtools} and \textbf{usethis}, as well as many of the R
-packages listed in the "Reproducible Research" CRAN Task View
+(e.g., \textbf{conda}, \textbf{Homebrew}, \textbf{Singularity}, \textbf{Docker}, \textbf{Kubernetes}, \textbf{packrat}
+\cite{packrat}, \textbf{checkpoint} \cite{checkpoint}, \textbf{switchr} \cite{switchr},
+RSuite \cite{RSuite}); development and management of computational
+pipelines (e.g., \textbf{GNU Make}, \textbf{Snakemake} \cite{snakemake}, \textbf{drake}
+\cite{drake}); management and archival of data objects (e.g., \textbf{archivist}
+\cite{archivist}, Dryad \cite{dryad}, Zenodo); and distribution of open
+source software (e.g., CRAN, Bioconductor \cite{bioconductor}, Bioconda
+\cite{bioconda}). Most of these tools or services could be used in
+combination with \textbf{workflowr}. There are additional, ambitious efforts to
+develop cloud-based services that come with many computational
+reproducibility features (e.g., Code Ocean, Binder, Gigantum, The Whole
+Tale). Many of these platforms manage individual projects as \textbf{Git}
+repositories, so \textbf{workflowr} could, in principle, be installed and used on
+these platforms, possibly to enhance their existing features. Other R
+packages with utilities to facilitate reproducibility that could
+complement \textbf{workflowr} include \textbf{ProjectTemplate} \cite{projecttemplate},
+rrtools \cite{rrtools}, and \textbf{usethis} \cite{usethis}, as well as many of
+the R packages listed in the "Reproducible Research" CRAN Task View
 (https://CRAN.R-project.org/view=ReproducibleResearch) and our own
 (unofficial) Task View on "Project Workflows"
 (https://github.com/jdblischak/ctv-project-workflows).
@@ -579,7 +583,7 @@ the Rmd files, can be controlled in the \verb|_workflowr.yml| file.
 
 \section*{Implementation}
 
-Here we give an overview of the \textbf{workflowr} package implementation. All \textbf{workflowr} commands can be invoked from R (or \textbf{RStudio}) so long as the working directory in R is set to the directory containing a \textbf{workflowr} project, or any subdirectory of a \textbf{workflowr} project (this is similar to how \textbf{Git} commands are invoked). To determine the root directory of a \textbf{workflowr} project from a subdirectory, whenever a command is called from the R console, \textbf{workflowr} uses the rprojroot R package to search for the \textbf{RStudio} project file stored at the root of the project. (The \textbf{RStudio} project file is a required file, so if this file is deleted, the \textbf{workflowr} commands will not work.)
+Here we give an overview of the \textbf{workflowr} package implementation. All \textbf{workflowr} commands can be invoked from R (or \textbf{RStudio}) so long as the working directory in R is set to the directory containing a \textbf{workflowr} project, or any subdirectory of a \textbf{workflowr} project (this is similar to how \textbf{Git} commands are invoked). To determine the root directory of a \textbf{workflowr} project from a subdirectory, whenever a command is called from the R console, \textbf{workflowr} uses the \textbf{rprojroot} \cite{rprojroot} R package to search for the \textbf{RStudio} project file stored at the root of the project. (The \textbf{RStudio} project file is a required file, so if this file is deleted, the \textbf{workflowr} commands will not work.)
 
 \subsection*{Organizing the project: \texttt{wflow\_start()}}
 
@@ -665,12 +669,13 @@ the \verb|analysis/_site.yml| configuration file are passed to function
 that can be customized in this file. For example, the default function
 used to record the session information at the bottom of each webpage,
 \texttt{sessionInfo()}, can be overridden by adding the YAML field
-\verb|sessioninfo| (e.g., the function from the \textbf{devtools} package could
-be used instead by setting \texttt{sessioninfo:
+\verb|sessioninfo| (e.g., the function from the \textbf{devtools} \cite{devtools}
+package could be used instead by setting \texttt{sessioninfo:
 devtools::session\_info()}).
 
 To execute the code, \texttt{wflow\_build()} first creates a new R session to
-execute the code. This is implemented using the R package callr.
+execute the code. This is implemented using the R package \textbf{callr}
+\cite{callr}.
 
 By default, the \textbf{rmarkdown} package renders an Rmd file in the directory
 where the Rmd file is stored; that is, the R working directory is
