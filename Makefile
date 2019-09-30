@@ -2,7 +2,7 @@
 NAME := workflowr-publication
 BIB := references
 
-all: $(NAME).pdf main.tex
+all: $(NAME).pdf
 
 %.pdf %.aux %-supplement.aux: %.tex $(BIB).bib
 	python format-bibtex.py $(BIB).bib
@@ -10,9 +10,6 @@ all: $(NAME).pdf main.tex
 	bibtex $(NAME)
 	pdflatex -shell-escape $(NAME)
 	pdflatex -shell-escape $(NAME)
-
-main.tex: $(NAME).tex
-	cp $< $@
 
 $(NAME).tex: $(NAME).docx format.R
 	pandoc -t plain -o $@ $<
