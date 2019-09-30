@@ -51,24 +51,22 @@ can build on them. However, accomplishing these goals is not easy,
 requiring careful attention to organization, workflow, and familiarity
 with tools that are not a regular part of every scientist's toolbox. We
 have developed an R package, \textbf{workflowr}, to help all scientists,
-regardless of background, overcome these challenges, and make their
-scientific analyses more organized, reproducible, well-documented, and
-shareable. \textbf{Workflowr} aims to instill a particular ``workflow'' --- a
-sequence of steps to be repeated and integrated into research practice
---- that helps make projects more reproducible and accessible.This
-workflow integrates four key elements: (1) version control (via \textbf{Git});
-(2) literate programming (via R Markdown); (3) automatic checks and
-safeguards that improve code reproducibility; and (4) sharing code and
-results via a browsable website. These features exploit powerful
-existing tools, whose mastery would take considerable study. However,
-the \textbf{workflowr} interface is simple enough that novice users can quickly
-enjoy its many benefits. By simply following the ``workflowr workflow'',
-R users can create projects whose results, figures, and development
-history are easily accessible on a static website --- thereby
-conveniently shareable with collaborators by sending them a URL --- and
-accompanied by source code and reproducibility safeguards. The \textbf{workflowr}
-R package is open source and available on CRAN, with full documentation
-and source code available at
+regardless of background, overcome these challenges. \textbf{Workflowr} aims to
+instill a particular ``workflow'' --- a sequence of steps to be repeated
+and integrated into research practice --- that helps make projects more
+reproducible and accessible.This workflow integrates four key elements:
+(1) version control (via \textbf{Git}); (2) literate programming (via R
+Markdown); (3) automatic checks and safeguards that improve code
+reproducibility; and (4) sharing code and results via a browsable
+website. These features exploit powerful existing tools, whose mastery
+would take considerable study. However, the \textbf{workflowr} interface is
+simple enough that novice users can quickly enjoy its many benefits. By
+simply following the ``workflowr workflow'', R users can create projects
+whose results, figures, and development history are easily accessible on
+a static website --- thereby conveniently shareable with collaborators
+by sending them a URL --- and accompanied by source code and
+reproducibility safeguards. The \textbf{workflowr} R package is open source and
+available on CRAN, with full documentation and source code available at
 \url{https://github.com/jdblischak/workflowr}.
 
 \end{abstract}
@@ -108,8 +106,8 @@ write code with little formal training in computing and informatics
 \cite{Wilson2014}. Further, modern interactive computer environments
 (e.g., R, python), while greatly enhancing code development
 \cite{Findler2002}, also make it easier to create results that are
-irreducible. To take one example, it is all too easy to run interactive
-code without recording or controlling the seed of a pseudo-random number
+irreducible. For example, it is all too easy to run interactive code
+without recording or controlling the seed of a pseudo-random number
 generator, or generate results in a ``contaminated'' environment that
 contains objects whose values are critical but unrecorded. Both these
 issues can lead to results that are difficult or impossible to
@@ -180,7 +178,7 @@ reproducibility that \textbf{workflowr} currently leaves to the user, such as
 management and deployment of computational environments and dependencies
 (e.g., \textbf{conda}, \textbf{Homebrew}, \textbf{Singularity}, \textbf{Docker}, \textbf{Kubernetes}, \textbf{packrat}
 \cite{packrat}, \textbf{checkpoint} \cite{checkpoint}, \textbf{switchr} \cite{switchr},
- \textbf{RSuite} \cite{RSuite}); development and management of computational
+ \textbf{RSuite} \cite{rsuite}); development and management of computational
 pipelines (e.g., \textbf{GNU Make}, \textbf{Snakemake} \cite{snakemake}, \textbf{drake}
 \cite{drake}); management and archival of data objects (e.g., \textbf{archivist}
 \cite{archivist}, Dryad \cite{dryad}, Zenodo); and distribution of open
@@ -196,9 +194,7 @@ packages with utilities to facilitate reproducibility that could
 complement \textbf{workflowr} include \textbf{ProjectTemplate} \cite{projecttemplate},
  \textbf{rrtools} \cite{rrtools}, and \textbf{usethis} \cite{usethis}, as well as many of
 the R packages listed in the ``Reproducible Research'' CRAN Task View
-(https://CRAN.R-project.org/view=ReproducibleResearch) and our own
-(unofficial) Task View on ``Project Workflows''
-(https://github.com/jdblischak/ctv-project-workflows).
+(https://CRAN.R-project.org/view=ReproducibleResearch).
 
 Of the available software tools facilitating reproducible research,
 perhaps the closest in scope to \textbf{workflowr} are the R package \textbf{adapr}
@@ -260,8 +256,8 @@ widespread. Nonetheless, we believe they are under-utilized for
 organizing the results of scientific projects. In particular, hypertext
 provides an ideal way to connect different analyses that have been
 performed, and to provide easy access to relevant external data (e.g.,
-related work or helpful background information); see Figure \ref{fig:organized}B and Use
-Cases below).
+related work or helpful background information); see Figure \ref{fig:organized}B and ``Use
+cases'' below.
 
 \subsection*{Organizing the project: \texttt{wflow\_start()}}
 
@@ -273,24 +269,26 @@ Cases below).
 
 \centering
 
-\includegraphics[width=0.8\textwidth]{figures/wflow-fig-1-v02.eps}
+\includegraphics[width=0.8\textwidth]{figures/wflow-fig-1-v03.eps}
 
 \cprotect\caption{\label{fig:organized}
 
 The \textbf{workflowr} package helps organize project files and results. A) The
 function \texttt{wflow\_start()} populates a project directory with all the files
-needed to begin a \textbf{workflowr} project. The default directory structure
-encourages users to organize their files as the project progresses.
-(This is only a suggested structure; users can change the names of most
-files and directories.) Files required by \textbf{workflowr} are depicted in red.
-B) All results are organized into a website (stored in \texttt{docs/}.
-The use of hyperlinks allows for efficient access to the results. The
+needed to begin a \textbf{workflowr} project (files and directories created by
+\texttt{wflow\_start()} are in red). The default directory structure encourages
+users to organize their files as the project progresses. (This is only a
+suggested structure; users can change the names of most files and
+directories.) Files required by \textbf{workflowr} are depicted in boldface. B)
+All results are organized into a website (stored in \texttt{docs/}. The
+use of hyperlinks allows for efficient access to the results. The
 screenshots above illustrate how a \textbf{workflowr} website can be navigated.
-Clicking a hyperlink in the main page (1) navigates the browser to a
-webpage containing some results; clicking on the ``Home'' hyperlink (2)
-in the navigation bar brings the browser back to the main page. For
-larger projects, the navigation bar can be used to quickly access
-different sections of a project.
+Clicking a hyperlink in the main page, \texttt{index.html}, (1)
+navigates the browser to a webpage containing some results,
+\texttt{visualize.html}; clicking on the ``Home'' hyperlink (2) in the
+navigation bar brings the browser back to the main page. For larger
+projects, the navigation bar can be used to quickly access different
+sections of a project.
 
 }
 
@@ -299,14 +297,15 @@ different sections of a project.
 The function \texttt{wflow\_start()} facilitates project organization by
 populating a directory with suggested subdirectories, scripts, and
 configuration files for a data analysis project (Figure \ref{fig:organized}A). The
-subdirectories created by default are analysis/ , where the Rmd analysis
-files are stored; docs/, which stores the website HTML files; code/,
-which is intended for longer-running scripts, compiled code (e.g., C++)
-and other source code supporting the data analyses; data/, for storing
-raw data files; and output/ for saving processed data files and other
-outputs generated by the scripts and analyses. This setup is flexible
-and configurable; only two of the directories, \verb|analysis/| and
-\verb|docs/|, are required, and both can be renamed later.
+subdirectories created by default are \texttt{analysis/}, where the Rmd
+analysis files are stored; \texttt{docs/}, which stores the website HTML
+files; \texttt{code/}, which is intended for longer-running scripts,
+compiled code (e.g., C++) and other source code supporting the data
+analyses; \texttt{data/}, for storing raw data files; and \texttt{output/},
+for saving processed data files and other outputs generated by the
+scripts and analyses. This setup is flexible and configurable; only two
+of the directories, \texttt{analysis/} and \texttt{docs/}, are required, and
+both can be renamed later.
 
 In addition to creating a default file structure for a data analysis
 project, \texttt{wflow\_start()} also initializes the project development history:
@@ -333,10 +332,10 @@ directory is a very common source of errors in data analyses.
 
 In a \textbf{workflowr} project, analyses are performed using the R Markdown
 literate programming system \cite{Xie2018}. The user develops their R
-code inside Rmd files in the analysis/ directory, then calls
+code inside Rmd files in the \texttt{analysis/} directory, then calls
 \texttt{wflow\_build()}, which runs the code and renders the results as HTML files
-in the docs/ directory. The \texttt{wflow\_build()} function extends the \texttt{render()}
-command from the \textbf{rmarkdown} package with several reproducibility
+in the \texttt{docs/} directory. The \texttt{wflow\_build()} function extends the
+\texttt{render()} command from the \textbf{rmarkdown} package with several reproducibility
 safeguards:
 
 1. It creates a clean R session for executing the code. This is critical
@@ -387,8 +386,8 @@ relative complexity of \textbf{Git} provides a high barrier to entry,
 discouraging many researchers from adopting it for their projects. And
  \textbf{Git} is not ideally suited to data analysis projects where one wants to
 coordinate the tracking of source code, data, and \textit{the results
-generated by the code and data} --- using the \textbf{Git} commands to identify
-the version of the code that was used to generate a result can be
+generated by the code and data}. Using \textbf{Git} commands to identify the
+version of the code that was used to generate a result can be
 non-trivial.
 
 The \texttt{wflow\_publish()} function is designed to address these challenges: it
@@ -425,7 +424,7 @@ results file.)
 
 \centering
 
-\includegraphics[width=0.8\textwidth]{figures/wflow-fig-2-v02.eps}
+\includegraphics[width=0.8\textwidth]{figures/wflow-fig-2-v03.eps}
 
 \cprotect\caption{\label{fig:publish}
 
@@ -544,7 +543,7 @@ widely used services, GitHub and GitLab. Once a user has created a \textbf{Git}
 repository on one of these online platforms, the project can be easily
 uploaded using \texttt{wflow\_git\_push()}. (There is also a companion function
 \texttt{wflow\_git\_pull()} which is used when multiple people are collaborating on
-a \textbf{workflowr} project, or when project is being updated from multiple
+a \textbf{workflowr} project, or when a project is being updated from multiple
 computers.)
 
 The results files in a \textbf{workflowr} website include links to past versions
@@ -576,10 +575,10 @@ outside regular \textbf{workflowr} usage.)
 
  \textbf{Workflowr} projects are highly customizable. For example, the look of the
 webpages can be customized, via options provided by the \textbf{rmarkdown}
-package, by editing the \verb|analysis/_site.yml| configuration file.
+package, by editing the \texttt{analysis/\_site.yml} configuration file.
 Additional settings specific to \textbf{workflowr}, such as setting the seed for
 the pseudorandom number generator, or setting the working directory for
-the Rmd files, can be controlled in the \verb|_workflowr.yml| file.
+the Rmd files, can be controlled in the \texttt{\_workflowr.yml} file.
 
 
 \section*{Implementation}
@@ -589,14 +588,14 @@ Here we give an overview of the \textbf{workflowr} package implementation. All \
 \subsection*{Organizing the project: \texttt{wflow\_start()}}
 
 The function \texttt{wflow\_start()} populates the project directory using
-predefined template files (see Figure \ref{fig:organized}). It uses the glue R package to
-insert relevant variables, e.g., the name of the project, directly into
-the newly created files. When \texttt{wflow\_start()} is called with git = TRUE
-(which is the default), a \textbf{Git} repository is created in the project
-directory, and all newly created or modified files are committed to the
-repository. If the user has never previously created a \textbf{Git} repository on
-their computer they may need to first call \texttt{wflow\_git\_config()} to
-configure \textbf{Git}.
+predefined template files (see Figure \ref{fig:organized}). It uses the \textbf{glue} \cite{glue} R
+package to insert relevant variables, e.g., the name of the project,
+directly into the newly created files. When \texttt{wflow\_start()} is called with
+\texttt{git = TRUE} (which is the default), a \textbf{Git} repository is created
+in the project directory, and all newly created or modified files are
+committed to the repository. If the user has never previously created a
+ \textbf{Git} repository on their computer they may need to first call
+\texttt{wflow\_git\_config()} to configure \textbf{Git}.
 
 \subsection*{Generating results reproducibly: \texttt{wflow\_build()}}
 
@@ -604,7 +603,7 @@ The \texttt{wflow\_build()} function generates a responsive website from a
 collection of Rmd files. Both \texttt{wflow\_build()} and \texttt{wflow\_publish()} support
 file patterns, also known as “wildcard expansion”; for example,
 \texttt{wflow\_build("analysis/*.Rmd")} will generate webpages for all
-the R Markdown files in the ``analysis’’ directory.
+the Rmd files in the \texttt{analysis/} directory.
 
 The \texttt{wflow\_build()} function extends the \texttt{render\_site()} function from the
  \textbf{rmarkdown} package. The \texttt{render\_site()} function in turn builds on the
@@ -612,14 +611,14 @@ Bootstrap framework to create a responsive website with a navigation
 bar. This rendering step includes downloading and linking to the
 required CSS and JavaScript files. Many website settings, such as the
 labels and URLs included in the navigation bar, can be adjusted in the
-\verb|analysis/_site.yml| configuration file. (These options can also be
-set individually inside the Rmd files, which will override the default
-options set in \texttt{analysis/\_site.yml}. ) Like other R packages
-that extend \textbf{rmarkdown} (e.g., \textbf{bookdown}), \textbf{workflowr} provides a custom site
-generator in the function \texttt{wflow\_site()} which alters the website
-generation process. For example, one change to this process is that the
-generated website files (the HTML, CSS, JavaScript and figures) are
-moved instead of copied from \verb|analysis/| to \verb|docs/|. This
+\texttt{analysis/\_site.yml} configuration file. (These options can also
+be set individually inside the Rmd files, which will override the
+default options set in \texttt{analysis/\_site.yml}. ) Like other R
+packages that extend \textbf{rmarkdown} (e.g. \textbf{bookdown}), \textbf{workflowr} provides a
+custom site generator in the function \texttt{wflow\_site()} which alters the
+website generation process. For example, one change to this process is
+that the generated website files (the HTML, CSS, JavaScript and figures)
+are moved instead of copied from \texttt{analysis/} to \texttt{docs/}. This
 reduces unnecessary duplication of files. Most of \textbf{workflowr}’s key
 features, including the reproducibility report, are implemented in
 \texttt{wflow\_html()}, which we describe next.
@@ -651,27 +650,28 @@ user has set up a remote repository hosted by either GitHub and GitLab.
 Clicking on a link to a past version of an Rmd file (or figure file) in
 a Web browser will load a webpage displaying the R Markdown source code
 (or figure file) as it is saved in the given commit. For past versions
-of the webpages, we use an independent service raw.githack.com, which
-displays the HTML file in the browser like any other webpage (this is
-because GitHub and GitLab only show the raw HTML code). These links will
-point to valid webpages only after the remote repository (on GitHub or
-GitLab) is updated, e.g., using \texttt{wflow\_git\_push()}. In the current
-implementation, when an Rmd file (and its corresponding HTML file) is
-renamed, the webpage does not include links to past versions prior to
-renaming. So renaming files will limit the ability to browse the project
-development history.
+of the webpages, we use an independent service
+\href{https://raw.githack.com/}{raw.githack.com}, which displays the
+HTML file in the browser like any other webpage (this is because GitHub
+and GitLab only show the raw HTML code). These links will point to valid
+webpages only after the remote repository (on GitHub or GitLab) is
+updated, e.g., using \texttt{wflow\_git\_push()}. In the current implementation,
+when an Rmd file (and its corresponding HTML file) is renamed, the
+webpage does not include links to past versions prior to renaming. So
+renaming files will limit the ability to browse the project development
+history.
 
 The \texttt{wflow\_html()} function allows for considerable customization of the
  \textbf{workflowr} reproducibility report, and other features. The settings in
-the \verb|analysis/_site.yml| configuration file are passed to function
-\texttt{html\_document()} in the \textbf{rmarkdown} package, whereas the settings in
-\verb|_workflowr.yml| are read by \texttt{wflow\_html()}; see
+the \texttt{analysis/\_site.yml} configuration file are passed to
+function \texttt{html\_document()} in the \textbf{rmarkdown} package, whereas the settings
+in \texttt{\_workflowr.yml} are read by \texttt{wflow\_html()}; see
 \texttt{help(wflow\_html)} for a full details on all \textbf{workflowr} settings
 that can be customized in this file. For example, the default function
 used to record the session information at the bottom of each webpage,
 \texttt{sessionInfo()}, can be overridden by adding the YAML field
-\verb|sessioninfo| (e.g., the function from the \textbf{devtools} \cite{devtools}
-package could be used instead by setting
+\texttt{sessioninfo} (e.g., the function from the \textbf{devtools}
+\cite{devtools} package could be used instead by setting
 \texttt{sessioninfo:\;devtools::session\_info()}).
 
 To execute the code, \texttt{wflow\_build()} first creates a new R session to
@@ -685,7 +685,7 @@ By default, \texttt{wflow\_html()} overrides the behaviour, and instead executes
 the R code with respect to the root project directory. This default is
 intended to improve reproducibility by resolving file paths from a
 consistent reference point. This execution directory can be controlled
-by the \verb|knit_root_dir| option, which is set in the 
+by the \texttt{knit\_root\_dir} option, which is set in the 
 \texttt{\_workflowr.yml} configuration file. By default, new projects execute the
 R Markdown code chunks in the root directory. If this setting is not
 configured, \textbf{workflowr} reverts to the \textbf{rmarkdown} default. It is also
@@ -868,13 +868,13 @@ inside a \textbf{Git} repository. This, however, requires considerable expertise
 to install and configure \textbf{Git LFS}, so it is not a satisfactory solution
 for some \textbf{workflowr} users. Also note that sensitive or secure data can be
 added to a \textbf{workflowr} project so long as the storage and access practices
-meet the data security requirements.  (\textbf{workflowr} has options to simplify
+meet the data security requirements.  (\textbf{Workflowr} has options to simplify
 creation and management of projects with security requirements.)
 
 Since \textbf{workflowr} builds on \textbf{Git}, users who already have experience with
  \textbf{Git} can use \textbf{Git} directly to manage their \textbf{workflowr} projects. This
 provides additional flexibility, but is not without risk; for example,
- \textbf{Git} commands such as “git reset” can be used to alter the project
+ \textbf{Git} commands such as \texttt{git reset} can be used to alter the project
 development history, and has the potential to break \textbf{workflowr}.
 
 Finally, \textbf{workflowr} records information about the computing environment
@@ -952,9 +952,9 @@ the Stephens lab, past and present. We also acknowledge the authors and
 contributors of the many great open source packages that the \textbf{workflowr}
 package builds on. R packages particularly critical to \textbf{workflowr}'s
 implementation are
-\href{https://cran.r-project.org/web/packages/git2r/index.html}{git2r},
-\href{https://github.com/yihui/knitr}{knitr} and
-\href{http://rmarkdown.rstudio.com/}{rmarkdown}.
+\textbf{\href{https://cran.r-project.org/web/packages/git2r/index.html}{git2r}},
+\textbf{\href{https://github.com/yihui/knitr}{knitr}}, and
+\textbf{\href{http://rmarkdown.rstudio.com/}{rmarkdown}}.
 
 {\small\bibliographystyle{abbrvnat}
 

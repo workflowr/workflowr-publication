@@ -71,6 +71,10 @@ lines_out <- str_replace_all(lines_out,
                              "set.seed\\(\\)",
                              "\\\\texttt{set.seed()}")
 
+# Replace \verb|| with \texttt{}
+# Note: we had started with \verb and then transitioned to \texttt
+lines_out <- str_replace_all(lines_out, "\\\\verb\\|([^\\|]+)\\|", "\\\\texttt\\{\\1}")
+
 # Replace # with \# for LaTeX
 lines_out <- str_replace_all(lines_out, "#", "\\\\#")
 
@@ -106,6 +110,7 @@ software <- c(
   "Git LFS", # Needs to come before Git
   "Git",
   "git2r",
+  "glue",
   "GNU Make",
   "Homebrew",
   "knitr",
@@ -130,8 +135,6 @@ software <- c(
   "workflowr",
   "Workflowr"
 )
-#browser()
-#lines_out <- str_replace_all(lines_out, " workflowr", " \\\\textbf\\{workflowr}")
 
 for (s in software) {
  lines_out <- str_replace_all(lines_out,
