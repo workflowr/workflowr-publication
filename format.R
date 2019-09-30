@@ -89,10 +89,10 @@ lines_out <- str_replace(lines_out, "\\\\texttt\\{\\\\$", "")
 lines_out <- str_replace(lines_out, "^_workflowr.yml", "\\\\texttt\\{\\\\_workflowr.yml")
 
 # Reference figures by labels
-lines_out <- str_replace_all(lines_out, "FIGURE 1", "Figure \\\\ref\\{fig:organized}\\")
-lines_out <- str_replace_all(lines_out, "FIGURE 2", "Figure \\\\ref\\{fig:publish}\\")
-lines_out <- str_replace_all(lines_out, "FIGURE 3", "Figure \\\\ref\\{fig:versioned}\\")
-lines_out <- str_replace_all(lines_out, "FIGURE 4", "Figure \\\\ref\\{fig:reproducible}\\")
+lines_out <- str_replace_all(lines_out, "FIGURE 1", "Figure \\\\ref\\{fig:start}\\")
+lines_out <- str_replace_all(lines_out, "FIGURE 2", "Figure \\\\ref\\{fig:build}\\")
+lines_out <- str_replace_all(lines_out, "FIGURE 3", "Figure \\\\ref\\{fig:publish}\\")
+lines_out <- str_replace_all(lines_out, "FIGURE 4", "Figure \\\\ref\\{fig:status}\\")
 
 # Bold names of software
 software <- c(
