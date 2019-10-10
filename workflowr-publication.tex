@@ -58,8 +58,8 @@ requiring careful attention to organization, workflow, and familiarity
 with tools that are not a regular part of every scientist's toolbox. We
 have developed an R package, \textbf{workflowr}, to help all scientists,
 regardless of background, overcome these challenges. \textbf{Workflowr} aims to
-instill a particular ``workflow'' --- a sequence of steps to be repeated
-and integrated into research practice --- that helps make projects more
+instill a particular ``workflow''---a sequence of steps to be repeated
+and integrated into research practice---that helps make projects more
 reproducible and accessible.This workflow integrates four key elements:
 (1) version control (via \textbf{Git}); (2) literate programming (via R
 Markdown); (3) automatic checks and safeguards that improve code
@@ -69,10 +69,10 @@ would take considerable study. However, the \textbf{workflowr} interface is
 simple enough that novice users can quickly enjoy its many benefits. By
 simply following the \textbf{workflowr} ``workflow'', R users can create projects
 whose results, figures, and development history are easily accessible on
-a static website --- thereby conveniently shareable with collaborators
-by sending them a URL --- and accompanied by source code and
-reproducibility safeguards. The \textbf{workflowr} R package is open source and
-available on CRAN, with full documentation and source code available at
+a static website---thereby conveniently shareable with collaborators by
+sending them a URL---and accompanied by source code and reproducibility
+safeguards. The \textbf{workflowr} R package is open source and available on
+CRAN, with full documentation and source code available at
 \url{https://github.com/jdblischak/workflowr}.
 
 \end{abstract}
@@ -90,7 +90,7 @@ literate programming, version control
 \section*{Introduction}
 
 A central tenet of the scientific method is that results should be
-independently verifiable --- and, ideally, extendable --- by other
+independently verifiable---and, ideally, extendable---by other
 researchers. As computational methods play an increasing role in many
 disciplines, key scientific results are often produced by computer code.
 Verifying and extending such results requires that the code be
@@ -105,7 +105,7 @@ Merali2010, Ioannidis2014, Stodden2018}.
 There are many barriers to sharing reproducible code and corresponding
 computational results \cite{kitzes2017}. One barrier is simply that
 keeping code and results sufficiently organized and documented is
-difficult --- it is burdensome even for experienced programmers who are
+difficult---it is burdensome even for experienced programmers who are
 well-trained in relevant computational tools such as version control
 (discussed later), and even harder for the many domain scientists who
 write code with little formal training in computing and informatics
@@ -128,8 +128,8 @@ analysts maintain reproducible code, document progress, and disseminate
 code and results to collaborators and to the scientific community. We
 have developed an open source R \cite{R2019} package, \textbf{workflowr}, to
 address this need. The \textbf{workflowr} package aims to instill a particular
-``workflow'' --- a sequence of steps to be repeated and integrated into
-research practice --- that helps make projects more reproducible and
+``workflow''---a sequence of steps to be repeated and integrated into
+research practice---that helps make projects more reproducible and
 accessible. To achieve this, \textbf{workflowr} integrates four key features that
 facilitate reproducible code development: (1) version control
 \cite{Loeliger2012, Chacon2014}; (2) literate programming
@@ -141,8 +141,8 @@ designed to be simple so that learning it does not become another
 barrier in itself and novice users can quickly enjoy its many benefits.
 By simply following the \textbf{workflowr} ``workflow'', R users can create
 projects whose results and figures are easily accessible on a static
-website --- thereby conveniently shareable with collaborators by sending
-them a URL --- and accompanied by source code and reproducibility
+website---thereby conveniently shareable with collaborators by sending
+them a URL---and accompanied by source code and reproducibility
 safeguards. The Web-based interface, updated with version control, also
 makes it easy to navigate through different parts of the project and
 browse the project history, including previous versions of figures and
@@ -211,8 +211,8 @@ control to maintain a project development history. Unlike \textbf{workflowr},
 both place considerable emphasis on managing and documenting
 dependencies (software and data), whereas \textbf{workflowr} only records this
 information. In contrast, \textbf{workflowr} places more emphasis on literate
-programming --- the publishing of text and code in a readable form ---
-and more closely integrates other features such as tracking project
+programming---the publishing of text and code in a readable form---and
+more closely integrates other features such as tracking project
 development history via \textbf{Git} with literate programming.
 
 The \textbf{workflowr} R package is available from
@@ -247,7 +247,7 @@ directory structure (Figure \ref{fig:start}A);
 files, with reproducibility safeguards in place;
 
 \item \texttt{wflow\_publish()} renders the webpages and updates the project
-development history—it commits the code, calls \texttt{wflow\_build()}, then
+development history---it commits the code, calls \texttt{wflow\_build()}, then
 commits the webpages;
 
 \item \texttt{wflow\_status()} reports the status of the project files; and
@@ -285,8 +285,8 @@ The \textbf{workflowr} package helps organize project files and results. A) The
 function \texttt{wflow\_start()} populates a project directory with all the files
 and subdirectories (shown in red) needed to begin a \textbf{workflowr} project.
 This default directory structure encourages users to organize their
-files as the project progresses—as the project develops, additional Rmd
-files may be organized in the "analyses" folder. This is only a
+files as the project progresses---as the project develops, additional
+Rmd files may be organized in the "analyses" folder. This is only a
 suggested structure; users can change the names of most files and
 directories. Required files are shown in boldface. B) All results are
 organized into a website (all HTML files generated by \textbf{workflowr} are
@@ -325,10 +325,10 @@ with \textbf{Git} is needed. We give more details about the \textbf{Git} reposit
 
 In some cases, a user will have an existing project (with files that may
 or may not be tracked by \textbf{Git}), and would like to incorporate \textbf{workflowr}
-into the project --- \texttt{wflow\_start()} also easily accommodates this
-scenario, with additional arguments to control how the \textbf{workflowr} files
-are added to the existing project. See the package vignette, ``Migrating
-an existing project to use \textbf{workflowr},'' for more details; it can be
+into the project---\texttt{wflow\_start()} also easily accommodates this scenario,
+with additional arguments to control how the \textbf{workflowr} files are added
+to the existing project. See the package vignette, ``Migrating an
+existing project to use \textbf{workflowr},'' for more details; it can be
 accessed by running \texttt{vignette("wflow-03-migrating")} after
 loading the \textbf{workflowr} package in R.
 
@@ -348,14 +348,14 @@ in the \texttt{docs/} directory. The \texttt{wflow\_build()} function extends th
 reproducibility safeguards:
 
 1. It creates a clean R session for executing the code. This is critical
-for reproducibility—results should not depend on the current state of
+for reproducibility---results should not depend on the current state of
 the user's R environment, and all objects necessary to run the code
 should be defined in the code or loaded by packages.
 
 2. It automatically sets the working directory in a consistent manner
 (the exact setting is controlled by a configuration file; see
 \textit{Implementation} below). This prevents one of the most common
-failures to reproduce in R—not setting the working directory before
+failures to reproduce in R---not setting the working directory before
 running the R script, resulting in incorrectly resolved relative file
 paths.
 
@@ -493,7 +493,7 @@ results files are coordinated whenever \texttt{wflow\_publish()} is used.
 
 \end{figure}
 
-Publishing an analysis is not necessarily final --- after calling
+Publishing an analysis is not necessarily final---after calling
 \texttt{wflow\_publish()}, the analysis can be repeatedly updated and re-published
 using \texttt{wflow\_publish()}. Each time \texttt{wflow\_publish()} succeeds in committing
 a new version of the code and results, a link to previously published
@@ -505,7 +505,7 @@ easily access previous versions and compare with the latest results.
 As a \textbf{workflowr} project grows, it is important to be able to get an
 overview of the project's status and identify files that may need
 attention. This functionality is provided by the \texttt{wflow\_status()} command,
-which gives the status of each Rmd file in the project --- either
+which gives the status of each Rmd file in the project---either
 “scratch”, “unpublished”, or “published”, whose definitions are given in
 Figure \ref{fig:status}. The “published” Rmd files, which are those that have been run
 through \texttt{wflow\_publish()}, are further recorded as either “up-to-date” or
@@ -652,8 +652,8 @@ elements needed to display the \textbf{workflowr} elements added in the
 preprocessing step. This postprocessing is done when \textbf{pandoc} converts the
 generated markdown to the final webpage.
 
-The process for embedding links to past versions of files --- that is,
-files added to previous commits in a \textbf{Git} repository --- requires some
+The process for embedding links to past versions of files---that is,
+files added to previous commits in a \textbf{Git} repository---requires some
 additional explanation. Links to past versions are included only if the
 user has set up a remote repository hosted by either GitHub or GitLab.
 Clicking on a link to a past version of an Rmd file (or figure file) in
@@ -724,8 +724,8 @@ working tree against the \textbf{Git} status of the corresponding HTML file. In
 uncommitted file in a \textbf{Git} repository; “unpublished” means that the Rmd
 file is committed to the \textbf{Git} repository but the corresponding HTML is
 not; a "published" Rmd file and its HTML file are both committed to the
- \textbf{Git} repository; and a "modified" Rmd file has changes --- these changes
-can be unstaged, staged, or committed --- that were made since the last
+ \textbf{Git} repository; and a "modified" Rmd file has changes---these changes
+can be unstaged, staged, or committed---that were made since the last
 time the corresponding HTML file was committed (Figure \ref{fig:status}).
 
 Using \textbf{git2r}, it is mostly straightforward to determine the status of
@@ -799,9 +799,9 @@ results from the GTEx data set that were presented in \citet{Urbut2019}.
 A \textbf{workflowr} project created by a Ph.D. student created to keep track of
 his investigations into controlling false discoveries in the presence of
 correlation and heteroskedastic noise. This repository illustrates the
-use of \textbf{workflowr} as a scientific notebook --- the webpages contain
-written notes, mathematical equations, source code, and the outputs
-generated from running the code.
+use of \textbf{workflowr} as a scientific notebook---the webpages contain written
+notes, mathematical equations, source code, and the outputs generated
+from running the code.
 
 \subsection*{Repositories for courses}
 
@@ -868,7 +868,7 @@ As \textbf{workflowr} has been used in a variety of settings, we have also
 uncovered some limitations. Here we report on some of the more common
 issues that have arisen.
 
-One limitation is that \textbf{Git} --- hence \textbf{workflowr} --- is not well suited to
+One limitation is that \textbf{Git}---hence \textbf{workflowr}---is not well suited to
 tracking very large files. Therefore, large data files must be left out
 of the project development history, which reduces reproducibility. One
 possible workaround is to use \textbf{Git LFS} (Large File Storage) or related
@@ -889,7 +889,7 @@ development history, and has the potential to break \textbf{workflowr}.
 Finally, \textbf{workflowr} records information about the computing environment
 used to generate the results, but it does not provide any facilities for
 replicating the environment. This is an area with many recent software
-advances --- there are many widely used tools for managing and deploying
+advances---there are many widely used tools for managing and deploying
 computational environments, from container technologies such as \textbf{Docker}
 to package managers such as Anaconda and \textbf{packrat}. We view these tools as
 being complementary to \textbf{workflowr}, and one future direction would be to
